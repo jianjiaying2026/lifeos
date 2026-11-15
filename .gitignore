@@ -11,6 +11,9 @@ _*.js
 _*.txt
 _*.png
 
+# 开发工具的内部工作笔记（含本机路径与排障记录，仅本地保留）
+.workbuddy/
+
 # 系统与编辑器杂物
 Thumbs.db
 desktop.ini

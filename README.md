@@ -57,12 +57,16 @@
 
 就这两步。没有依赖、没有构建步骤、不需要 Node、不需要联网。
 
-### 方式二：从仓库获取（仓库已推到 GitHub 时）
+### 方式二：从仓库获取
+
+仓库地址：<https://github.com/jianjiaying2026/lifeos>
 
 ```bash
-git clone git@github.com:jianjiaying2026/<仓库名>.git
-cd <仓库名>
+git clone git@github.com:jianjiaying2026/lifeos.git
+cd lifeos
 ```
+
+不需要 Git 的话，也可以在仓库页面点 `Code → Download ZIP`，解压后同样双击 `我的工作台.html`。
 
 然后双击 `我的工作台.html`，或：
 
