@@ -1,0 +1,19 @@
+# 测试用浏览器配置目录（每个约 8-17MB，自动生成，不入库）
+_profile*/
+_profile*
+
+# 安装包与安装日志（下载产物，不入库）
+_setup/
+
+# 临时测试文件
+_*.html
+_*.js
+_*.txt
+_*.png
+
+# 系统与编辑器杂物
+Thumbs.db
+desktop.ini
+.DS_Store
+*.log
+~$*

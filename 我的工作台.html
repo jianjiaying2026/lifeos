@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>我的工作台</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f5f6f8;--card:#fff;--txt:#1b1f24;--muted:#6b7280;--line:#e6e8ec;
+  --accent:#2f6fed;--accent-soft:#eaf1fe;--ok:#12996b;--warn:#d98218;--danger:#d8453c;
+  --r:14px;--shadow:0 1px 2px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.04);
+}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:650}
+.app{display:flex;align-items:flex-start;min-height:100vh}
+.sidebar{width:214px;flex:0 0 214px;background:#fff;border-right:1px solid var(--line);padding:18px 12px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.brand{font-weight:700;font-size:15px;padding:4px 10px 16px;letter-spacing:-.2px}
+.navitem{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;padding:9px 10px;border-radius:10px;color:#3d4450;cursor:pointer;font:inherit;text-align:left}
+.navitem:hover{background:#f2f4f7}
+.navitem.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.navitem .ic{width:18px;text-align:center;opacity:.85;font-size:14px}
+.side-foot{margin-top:auto;font-size:11.5px;color:#9aa1ab;padding:10px;line-height:1.5}
+main{flex:1;min-width:0;padding:24px 28px 70px;max-width:1260px}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.ph h1{font-size:21px;letter-spacing:-.3px}
+.sub{color:var(--muted);font-size:12.5px;margin-top:3px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;box-shadow:var(--shadow)}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.card-h h3{font-size:14.5px}
+.grid{display:grid;gap:16px;margin-bottom:16px}
+.g2{grid-template-columns:1.35fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1040px){.g2,.g3{grid-template-columns:1fr}}
+.row{display:flex;gap:8px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.input,.select,textarea.input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--txt);font:inherit;outline:none}
+.input:focus,.select:focus,textarea.input:focus{border-color:#b9cdfb;box-shadow:0 0 0 3px rgba(47,111,237,.12)}
+textarea.input{resize:vertical;line-height:1.6}
+.btn{border:1px solid var(--line);background:#fff;color:var(--txt);padding:8px 13px;border-radius:9px;cursor:pointer;font:inherit;white-space:nowrap}
+.btn:hover{background:#f4f6f9}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:#255ed4}
+.btn-sm{padding:5px 9px;font-size:12.5px;border-radius:8px}
+.btn-ico{border:0;background:transparent;color:#9aa1ab;cursor:pointer;font-size:13px;padding:4px 6px;border-radius:7px;line-height:1}
+.btn-ico:hover{background:#f2f4f7;color:var(--danger)}
+.list{display:flex;flex-direction:column}
+.item{display:flex;gap:10px;align-items:center;padding:9px 2px;border-bottom:1px dashed var(--line)}
+.item:last-child{border-bottom:0}
+.it-main{flex:1;min-width:0}
+.t{font-size:13.8px;word-break:break-word}
+.done .t{text-decoration:line-through;color:#9aa1ab}
+.muted{color:var(--muted)}
+.xs{font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#f2f4f7;color:#5b6472;font-size:11.5px;white-space:nowrap}
+.chip.high{background:#fdeceb;color:#c0392b}
+.chip.mid{background:#fdf3e4;color:#b97612}
+.chip.low{background:#eef1f5;color:#6b7280}
+.chip.ok{background:#e8f7f1;color:var(--ok)}
+.chip.acc{background:var(--accent-soft);color:var(--accent)}
+.tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.tab{border:0;background:transparent;padding:9px 12px;border-radius:9px 9px 0 0;cursor:pointer;color:var(--muted);font:inherit;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;background:#f8faff}
+.prog{height:7px;background:#eef1f5;border-radius:999px;overflow:hidden;margin:6px 0 10px}
+.prog>i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .25s}
+.prog.sm{height:5px;margin:8px 0 0}
+.check{width:17px;height:17px;border-radius:5px;border:1.5px solid #c7ccd4;background:#fff;cursor:pointer;flex:0 0 auto;display:grid;place-items:center;color:#fff;font-size:11px;padding:0;line-height:1}
+.check.on{background:var(--ok);border-color:var(--ok)}
+.empty{color:#9aa1ab;font-size:13px;padding:14px 2px}
+.kpi{cursor:pointer;transition:transform .12s,box-shadow .12s}
+.kpi:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(16,24,40,.08)}
+.k-top{color:var(--muted);font-size:12.5px;display:flex;justify-content:space-between}
+.k-num{font-size:26px;font-weight:700;letter-spacing:-.6px;margin:6px 0 2px;line-height:1.1}
+.k-sub{font-size:12px;color:#8a929e}
+.overlay{position:fixed;inset:0;background:rgba(16,24,40,.36);display:grid;place-items:center;z-index:50;padding:24px}
+.modal{background:#fff;border-radius:16px;width:min(540px,100%);max-height:86vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(16,24,40,.28)}
+.modal-h{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-bottom:1px solid var(--line)}
+.modal-h h3{font-size:15px}
+.modal-b{padding:16px 18px;overflow:auto;display:flex;flex-direction:column;gap:11px}
+.modal-f{display:flex;justify-content:flex-end;gap:8px;padding:13px 18px;border-top:1px solid var(--line)}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label{font-size:12px;color:var(--muted)}
+.date-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.weekrow{display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center;padding:5px 0}
+.weekrow .day{font-size:12.5px;color:var(--muted)}
+.weekrow.today .day{color:var(--accent);font-weight:600}
+.stagebar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 11px;font:inherit;font-size:12.5px;cursor:pointer;color:#5b6472}
+.pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.hr{height:1px;background:var(--line);margin:4px 0}
+.bignum{font-size:19px;font-weight:700;letter-spacing:-.3px}
+.tagline{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">我的工作台</div>
+    <nav id="nav"></nav>
+    <div class="side-foot">数据只存在这台电脑的浏览器里<br>建议每月在「数据与设置」导出一次备份</div>
+  </aside>
+  <main id="main"></main>
+</div>
+<div id="modal-root"></div>
+
+<script>
+/* ============================================================
+   基础工具
+============================================================ */
+const KEY = 'lifeos.v1';
+const SLOTS = ['早上','上午','下午','晚上','未定'];
+const PRIOS = [['high','高'],['mid','中'],['low','低']];
+const STAGES = ['选题','草稿','待发布','已发布'];
+const PLATFORMS = ['小红书','公众号','抖音','B站','视频号','其他'];
+const PSTATUS = ['想法','进行中','暂停','完成'];
+const CSTATUS = ['待跟进','进行中','已完成'];
+const GSTATUS = ['想玩','在玩','通关','弃坑'];
+const MEALS = ['早餐','午餐','晚餐','加餐'];
+const WEEKNAME = ['周日','周一','周二','周三','周四','周五','周六'];
+
+const pad = n => String(n).padStart(2,'0');
+const dstr = d => d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+const todayStr = () => dstr(new Date());
+const shift = (s,n) => { const d = new Date(s+'T00:00:00'); d.setDate(d.getDate()+n); return dstr(d); };
+const weekdayNum = s => { const g = new Date(s+'T00:00:00').getDay(); return g === 0 ? 7 : g; };
+const weekName = s => WEEKNAME[new Date(s+'T00:00:00').getDay()];
+const fmtDate = s => { if(!s) return ''; const p = s.split('-'); return (+p[1]) + '月' + (+p[2]) + '日'; };
+const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-3);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+
+function weekRange(){
+  const t = todayStr();
+  const mon = shift(t, -(weekdayNum(t)-1));
+  return [mon, shift(mon,6)];
+}
+function timeAgo(ts){
+  const m = Math.floor((Date.now()-ts)/60000);
+  if(m < 1) return '刚刚';
+  if(m < 60) return m + ' 分钟前';
+  const h = Math.floor(m/60);
+  if(h < 24) return h + ' 小时前';
+  const d = Math.floor(h/24);
+  if(d < 30) return d + ' 天前';
+  return new Date(ts).toLocaleDateString('zh-CN');
+}
+
+/* ============================================================
+   数据层
+============================================================ */
+function blank(){
+  return {
+    version: 1,
+    plans: [],      // {id,date,text,slot,priority,done}
+    memos: [],      // {id,text,ts}
+    ideas: [],      // {id,text,tags,ts,used}
+    contents: [],   // {id,title,platform,planDate,stage,body,created}
+    metrics: [],    // {id,contentId,date,views,likes,note}
+    projects: [],   // {id,name,desc,status,tasks:[],issues:[]}
+    consults: [],   // {id,who,topic,date,status,followUp,summary}
+    fitness: { week: {'1':'','2':'','3':'','4':'','5':'','6':'','7':''}, logs: [] },
+    food: { items: [] },  // {id,date,slot,text}
+    games: [],      // {id,name,status}
+    plays: []       // {id,gameId,date,minutes}
+  };
+}
+/* 把任意来源的数据补齐成合法结构：缺字段补默认值，类型不对就重置 */
+function normalize(raw){
+  const d = Object.assign(blank(), (raw && typeof raw === 'object') ? raw : {});
+  if(!d.version) d.version = 1;
+  ['plans','memos','ideas','contents','metrics','projects','consults','games','plays']
+    .forEach(k => { if(!Array.isArray(d[k])) d[k] = []; });
+  d.fitness = (d.fitness && typeof d.fitness === 'object') ? d.fitness : {};
+  d.fitness.week = Object.assign({'1':'','2':'','3':'','4':'','5':'','6':'','7':''}, d.fitness.week || {});
+  if(!Array.isArray(d.fitness.logs)) d.fitness.logs = [];
+  d.food = (d.food && typeof d.food === 'object') ? d.food : {};
+  if(!Array.isArray(d.food.items)) d.food.items = [];
+  d.projects.forEach(p => {
+    if(!Array.isArray(p.tasks)) p.tasks = [];
+    if(!Array.isArray(p.issues)) p.issues = [];
+  });
+  return d;
+}
+
+function load(){
+  try {
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return blank();
+    return normalize(JSON.parse(raw));
+  } catch(e){ return blank(); }
+}
+
+let storageWarned = false;
+let db = load();
+
+function save(){
+  const payload = JSON.stringify(db);
+  try {
+    localStorage.setItem(KEY, payload);
+    if(localStorage.getItem(KEY) !== payload && !storageWarned){
+      storageWarned = true;
+      alert('数据可能没有保存成功：浏览器存储不可用。请立即在「数据与设置」导出备份。');
+    }
+  }
+  catch(e){
+    if(!storageWarned){
+      storageWarned = true;
+      alert('保存失败：浏览器存储空间可能已满或不可用，请先导出备份。');
+    }
+  }
+}
+
+/* ============================================================
+   状态
+============================================================ */
+let route = 'home';
+let planDate = todayStr();
+let foodDate = todayStr();
+let smTab = 'idea';
+let cmStage = '全部';
+let devOpen = null;
+let cfFilter = '全部';
+let showUsedIdeas = false;
+let lastRoute = null;
+
+const NAV = [
+  ['home','首页总览','◉'],
+  ['plan','今日计划','☑'],
+  ['selfmedia','自媒体工作','✎'],
+  ['dev','开发工作','⌘'],
+  ['consult','咨询工作','☎'],
+  ['fitness','健身计划','⚡'],
+  ['food','饮食计划','◕'],
+  ['game','游戏娱乐','▶'],
+  ['settings','数据与设置','⚙']
+];
+
+/* ============================================================
+   渲染
+============================================================ */
+function render(){
+  const y = window.scrollY;
+  document.getElementById('nav').innerHTML = NAV.map(([k,label,ic]) =>
+    `<button class="navitem ${route===k?'on':''}" data-act="go" data-route="${k}"><span class="ic">${ic}</span>${label}</button>`
+  ).join('');
+
+  const views = {
+    home: viewHome, plan: viewPlan, selfmedia: viewSm, dev: viewDev,
+    consult: viewConsult, fitness: viewFitness, food: viewFood,
+    game: viewGame, settings: viewSettings
+  };
+  document.getElementById('main').innerHTML = views[route]();
+  if(lastRoute === route) window.scrollTo(0,y); else window.scrollTo(0,0);
+  lastRoute = route;
+}
+
+/* ============================================================
+   1. 首页
+============================================================ */
+function viewHome(){
+  const t = todayStr();
+  const todays = db.plans.filter(p => p.date === t)
+    .sort((a,b) => SLOTS.indexOf(a.slot) - SLOTS.indexOf(b.slot));
+  const doneN = todays.filter(p => p.done).length;
+  const pct = todays.length ? Math.round(doneN/todays.length*100) : 0;
+
+  const pendingWrite = db.contents.filter(c => c.stage !== '已发布').length;
+  const pubN = db.contents.filter(c => c.stage === '已发布').length;
+
+  const running = db.projects.filter(p => p.status === '进行中');
+  const openIssues = db.projects.reduce((n,p) => n + p.issues.filter(i => !i.resolved).length, 0);
+
+  const follow = db.consults.filter(c => c.status !== '已完成' && c.followUp && c.followUp <= t);
+  const fitPlan = db.fitness.week[String(weekdayNum(t))] || '';
+  const fitLog = db.fitness.logs.find(l => l.date === t);
+  const mealN = db.food.items.filter(i => i.date === t).length;
+  const [mon,sun] = weekRange();
+  const weekMin = db.plays.filter(p => p.date >= mon && p.date <= sun).reduce((n,p) => n + (+p.minutes||0), 0);
+
+  const planRows = todays.length ? todays.map(p => `
+    <div class="item ${p.done?'done':''}">
+      <button class="check ${p.done?'on':''}" data-act="plan-toggle" data-id="${p.id}">${p.done?'✓':''}</button>
+      <div class="it-main"><div class="t">${esc(p.text)}</div></div>
+      <span class="chip ${p.priority==='high'?'high':p.priority==='mid'?'mid':'low'}">${p.priority==='high'?'高':p.priority==='mid'?'中':'低'}</span>
+      <span class="chip">${esc(p.slot)}</span>
+    </div>`).join('') : '<div class="empty">今天还没有安排，加一条吧</div>';
+
+  const memoRows = db.memos.slice(0,6).map(m => `
+    <div class="item">
+      <div class="it-main"><div class="t">${esc(m.text)}</div><div class="muted xs">${timeAgo(m.ts)}</div></div>
+      <button class="btn-ico" data-act="memo-del" data-id="${m.id}" title="删除">✕</button>
+    </div>`).join('') || '<div class="empty">还没有备忘</div>';
+
+  const hour = new Date().getHours();
+  const greet = hour < 6 ? '夜深了' : hour < 11 ? '早上好' : hour < 14 ? '中午好' : hour < 18 ? '下午好' : '晚上好';
+
+  return `
+  <div class="ph">
+    <div>
+      <h1>${greet}，今天 ${fmtDate(t)}</h1>
+      <div class="sub">${weekName(t)} · 今天有 ${todays.length - doneN} 件待办 · ${follow.length} 个咨询要跟进</div>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <section class="card">
+      <div class="card-h"><h3>今日计划</h3><span class="muted xs">${doneN}/${todays.length} 已完成</span></div>
+      <div class="prog"><i style="width:${pct}%"></i></div>
+      <div class="list">${planRows}</div>
+      <div class="row" style="margin-top:10px">
+        <input class="input" id="homePlan" placeholder="加一条今天的计划，按回车保存" data-enter="home-plan">
+        <button class="btn btn-primary" data-act="home-plan">添加</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-h"><h3>快速备忘</h3><span class="muted xs">${db.memos.length} 条</span></div>
+      <div class="row">
+        <input class="input" id="memoInput" placeholder="随手记一句，按回车保存" data-enter="memo-add">
+        <button class="btn btn-primary" data-act="memo-add">记下</button>
+      </div>
+      <div class="list" style="margin-top:8px">${memoRows}</div>
+    </section>
+  </div>
+
+  <div class="grid g3">
+    <div class="card kpi" data-act="go" data-route="selfmedia">
+      <div class="k-top"><span>自媒体工作</span><span>›</span></div>
+      <div class="k-num">${pendingWrite}</div>
+      <div class="k-sub">条待完成内容 · 已发布 ${pubN} 条</div>
+    </div>
+    <div class="card kpi" data-act="go" data-route="dev">
+      <div class="k-top"><span>开发工作</span><span>›</span></div>
+      <div class="k-num">${running.length}</div>
+      <div class="k-sub">个项目进行中 · 未解决问题 ${openIssues} 个</div>
+    </div>
+    <div class="card kpi" data-act="go" data-route="consult">
+      <div class="k-top"><span>咨询工作</span><span>›</span></div>
+      <div class="k-num">${follow.length}</div>
+      <div class="k-sub">个咨询待跟进</div>
+    </div>
+    <div class="card kpi" data-act="go" data-route="fitness">
+      <div class="k-top"><span>健身计划</span><span>›</span></div>
+      <div class="k-num">${fitLog ? '已练' : '未练'}</div>
+      <div class="k-sub">${fitPlan ? '今天：' + esc(fitPlan) : '今天还没排训练'}</div>
+    </div>
+    <div class="card kpi" data-act="go" data-route="food">
+      <div class="k-top"><span>饮食计划</span><span>›</span></div>
+      <div class="k-num">${mealN}</div>
+      <div class="k-sub">条今日饮食记录</div>
+    </div>
+    <div class="card kpi" data-act="go" data-route="game">
+      <div class="k-top"><span>游戏娱乐</span><span>›</span></div>
+      <div class="k-num">${Math.round(weekMin/6)/10}h</div>
+      <div class="k-sub">本周游戏时长 · ${db.games.filter(g=>g.status==='在玩').length} 个在玩</div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   2. 今日计划
+============================================================ */
+function viewPlan(){
+  const d = planDate;
+  const list = db.plans.filter(p => p.date === d)
+    .sort((a,b) => SLOTS.indexOf(a.slot) - SLOTS.indexOf(b.slot));
+  const doneN = list.filter(p => p.done).length;
+
+  const rows = list.length ? list.map(p => `
+    <div class="item ${p.done?'done':''}">
+      <button class="check ${p.done?'on':''}" data-act="plan-toggle" data-id="${p.id}">${p.done?'✓':''}</button>
+      <div class="it-main">
+        <div class="t">${esc(p.text)}</div>
+        <div class="tagline">
+          <span class="chip ${p.priority==='high'?'high':p.priority==='mid'?'mid':'low'}">${p.priority==='high'?'高优先':p.priority==='mid'?'普通':'低优先'}</span>
+          <span class="chip">${esc(p.slot)}</span>
+        </div>
+      </div>
+      <button class="btn btn-sm" data-act="plan-later" data-id="${p.id}" title="推迟到第二天">推迟</button>
+      <button class="btn-ico" data-act="plan-del" data-id="${p.id}" title="删除">✕</button>
+    </div>`).join('') : '<div class="empty">这一天还没有计划</div>';
+
+  const isToday = d === todayStr();
+
+  return `
+  <div class="ph">
+    <div><h1>今日计划</h1><div class="sub">${fmtDate(d)} · ${weekName(d)}${isToday?' · 今天':''}</div></div>
+    <div class="row">
+      <button class="btn" data-act="plan-shift" data-n="-1">‹ 前一天</button>
+      <button class="btn" data-act="plan-today">今天</button>
+      <button class="btn" data-act="plan-shift" data-n="1">后一天 ›</button>
+      <input class="input" type="date" value="${d}" data-act="plan-date" style="width:150px">
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <section class="card">
+      <div class="card-h"><h3>${isToday?'今天的安排':'这天安排'}</h3><span class="muted xs">${doneN}/${list.length} 完成</span></div>
+      <div class="list">${rows}</div>
+    </section>
+
+    <section class="card">
+      <div class="card-h"><h3>添加计划</h3></div>
+      <div class="field" style="margin-bottom:9px">
+        <label>做什么</label>
+        <input class="input" id="planText" placeholder="例如：写完第 3 篇稿子" data-enter="plan-add">
+      </div>
+      <div class="row" style="margin-bottom:9px">
+        <div class="field" style="flex:1"><label>时间</label>
+          <select class="select" id="planSlot">${SLOTS.map(s=>`<option>${s}</option>`).join('')}</select>
+        </div>
+        <div class="field" style="flex:1"><label>优先级</label>
+          <select class="select" id="planPrio">${PRIOS.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select>
+        </div>
+      </div>
+      <button class="btn btn-primary" data-act="plan-add" style="width:100%">添加到 ${fmtDate(d)}</button>
+      <div class="hr" style="margin:14px 0"></div>
+      <div class="muted xs">提示：勾选完成会自动保存；「推迟」把这条移动到第二天。</div>
+    </section>
+  </div>`;
+}
+
+/* ============================================================
+   3. 自媒体
+============================================================ */
+function viewSm(){
+  const tabs = [['idea','灵感池'],['content','内容创作'],['data','数据追踪']];
+  let body = '';
+
+  if(smTab === 'idea'){
+    const ideas = db.ideas.filter(i => showUsedIdeas ? true : !i.used);
+    body = `
+    <section class="card">
+      <div class="row" style="margin-bottom:10px">
+        <input class="input" id="ideaText" placeholder="随手记一个灵感，按回车保存" data-enter="idea-add">
+        <input class="input" id="ideaTags" placeholder="标签，逗号分隔" style="width:200px">
+        <button class="btn btn-primary" data-act="idea-add">记下</button>
+      </div>
+      <div class="row" style="justify-content:space-between;margin-bottom:4px">
+        <span class="muted xs">${db.ideas.filter(i=>!i.used).length} 个未使用 · ${db.ideas.filter(i=>i.used).length} 个已转选题</span>
+        <button class="btn btn-sm" data-act="idea-toggle-used">${showUsedIdeas?'只看未使用':'显示已用'}</button>
+      </div>
+      <div class="list">${ideas.length ? ideas.map(i => `
+        <div class="item">
+          <div class="it-main">
+            <div class="t">${esc(i.text)}</div>
+            <div class="tagline">
+              ${(i.tags||'').split(/[,，\s]+/).filter(Boolean).map(t=>`<span class="chip acc">${esc(t)}</span>`).join('')}
+              ${i.used?'<span class="chip ok">已转选题</span>':''}
+              <span class="chip">${timeAgo(i.ts)}</span>
+            </div>
+          </div>
+          ${i.used?'':`<button class="btn btn-sm" data-act="idea-use" data-id="${i.id}">转选题</button>`}
+          <button class="btn-ico" data-act="idea-del" data-id="${i.id}" title="删除">✕</button>
+        </div>`).join('') : '<div class="empty">还没有灵感，先记一条</div>'}
+      </div>
+    </section>`;
+  }
+
+  if(smTab === 'content'){
+    const list = db.contents.filter(c => cmStage === '全部' || c.stage === cmStage);
+    const counts = {};
+    STAGES.forEach(s => counts[s] = db.contents.filter(c => c.stage === s).length);
+    body = `
+    <div class="stagebar">
+      <button class="pill ${cmStage==='全部'?'on':''}" data-act="cm-stage" data-s="全部">全部 ${db.contents.length}</button>
+      ${STAGES.map(s=>`<button class="pill ${cmStage===s?'on':''}" data-act="cm-stage" data-s="${s}">${s} ${counts[s]}</button>`).join('')}
+      <button class="btn btn-primary btn-sm" data-act="content-new" style="margin-left:auto">＋ 新建内容</button>
+    </div>
+    <div class="list card">${list.length ? list.map(c => `
+      <div class="item">
+        <div class="it-main">
+          <div class="t">${esc(c.title)}</div>
+          <div class="tagline">
+            <span class="chip">${esc(c.platform||'未定平台')}</span>
+            ${c.planDate?`<span class="chip">计划 ${fmtDate(c.planDate)}</span>`:''}
+            ${c.body?`<span class="chip ok">有正文</span>`:''}
+          </div>
+        </div>
+        <select class="select" data-act="content-stage" data-id="${c.id}" style="width:104px">
+          ${STAGES.map(s=>`<option ${s===c.stage?'selected':''}>${s}</option>`).join('')}
+        </select>
+        <button class="btn btn-sm" data-act="content-edit" data-id="${c.id}">打开</button>
+        <button class="btn-ico" data-act="content-del" data-id="${c.id}" title="删除">✕</button>
+      </div>`).join('') : '<div class="empty">还没有内容，从灵感池转一个过来，或直接新建</div>'}
+    </div>`;
+  }
+
+  if(smTab === 'data'){
+    const recs = db.metrics.slice().sort((a,b)=> b.date.localeCompare(a.date));
+    const totalViews = recs.reduce((n,r)=>n+(+r.views||0),0);
+    const totalLikes = recs.reduce((n,r)=>n+(+r.likes||0),0);
+    const t = todayStr(), d7 = shift(t,-6);
+    const views7 = recs.filter(r=>r.date>=d7).reduce((n,r)=>n+(+r.views||0),0);
+
+    body = `
+    <div class="grid g3" style="margin-bottom:16px">
+      <div class="card"><div class="k-top">累计播放/阅读</div><div class="k-num">${totalViews}</div><div class="k-sub">${recs.length} 条记录</div></div>
+      <div class="card"><div class="k-top">累计点赞</div><div class="k-num">${totalLikes}</div><div class="k-sub">平均 ${recs.length?Math.round(totalLikes/recs.length):0} / 条</div></div>
+      <div class="card"><div class="k-top">近 7 天播放</div><div class="k-num">${views7}</div><div class="k-sub">${fmtDate(d7)} 至 ${fmtDate(t)}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>发布数据</h3><button class="btn btn-primary btn-sm" data-act="metric-new">＋ 记一条数据</button></div>
+      <div class="list">${recs.length ? recs.map(r => {
+        const c = db.contents.find(x=>x.id===r.contentId);
+        return `<div class="item">
+          <div class="it-main">
+            <div class="t">${esc(c?c.title:'（内容已删除）')}</div>
+            <div class="tagline">
+              <span class="chip">${fmtDate(r.date)}</span>
+              <span class="chip">播放 ${r.views||0}</span>
+              <span class="chip">赞 ${r.likes||0}</span>
+              ${r.note?`<span class="chip">${esc(r.note)}</span>`:''}
+            </div>
+          </div>
+          <button class="btn-ico" data-act="metric-del" data-id="${r.id}" title="删除">✕</button>
+        </div>`;
+      }).join('') : '<div class="empty">还没有数据记录。发布后隔天来记一条，比空想有用。</div>'}</div>
+    </div>`;
+  }
+
+  return `
+  <div class="ph"><div><h1>自媒体工作</h1><div class="sub">灵感 → 内容 → 数据，一条线走完</div></div></div>
+  <div class="tabs">${tabs.map(([k,l])=>`<button class="tab ${smTab===k?'on':''}" data-act="sm-tab" data-tab="${k}">${l}</button>`).join('')}</div>
+  ${body}`;
+}
+
+/* ============================================================
+   4. 开发工作
+============================================================ */
+function viewDev(){
+  if(devOpen){
+    const p = db.projects.find(x => x.id === devOpen);
+    if(!p){ devOpen = null; return viewDev(); }
+    const doneN = p.tasks.filter(t => t.done).length;
+    const pct = p.tasks.length ? Math.round(doneN/p.tasks.length*100) : 0;
+    const openI = p.issues.filter(i => !i.resolved).length;
+
+    return `
+    <div class="ph">
+      <div>
+        <button class="btn btn-sm" data-act="dev-close" style="margin-bottom:8px">‹ 返回项目列表</button>
+        <h1>${esc(p.name)}</h1>
+        <div class="sub">${esc(p.desc||'没有项目说明')}</div>
+      </div>
+      <div class="row">
+        <select class="select" data-act="dev-status" data-id="${p.id}" style="width:120px">
+          ${PSTATUS.map(s=>`<option ${s===p.status?'selected':''}>${s}</option>`).join('')}
+        </select>
+        <button class="btn" data-act="dev-edit" data-id="${p.id}">编辑</button>
+        <button class="btn" data-act="dev-del" data-id="${p.id}">删除项目</button>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <section class="card">
+        <div class="card-h"><h3>任务</h3><span class="muted xs">${doneN}/${p.tasks.length}</span></div>
+        <div class="prog"><i style="width:${pct}%"></i></div>
+        <div class="list">${p.tasks.length ? p.tasks.map(t => `
+          <div class="item ${t.done?'done':''}">
+            <button class="check ${t.done?'on':''}" data-act="dev-task-toggle" data-pid="${p.id}" data-id="${t.id}">${t.done?'✓':''}</button>
+            <div class="it-main"><div class="t">${esc(t.text)}</div></div>
+            <button class="btn-ico" data-act="dev-task-del" data-pid="${p.id}" data-id="${t.id}" title="删除">✕</button>
+          </div>`).join('') : '<div class="empty">还没有任务</div>'}</div>
+        <div class="row" style="margin-top:10px">
+          <input class="input" id="devTaskInput" placeholder="加一条任务，回车保存" data-enter="dev-task-add">
+          <button class="btn btn-primary" data-act="dev-task-add">添加</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-h"><h3>问题 / Bug</h3><span class="muted xs">${openI} 个未解决</span></div>
+        <div class="list">${p.issues.length ? p.issues.map(i => `
+          <div class="item ${i.resolved?'done':''}">
+            <button class="check ${i.resolved?'on':''}" data-act="dev-issue-toggle" data-pid="${p.id}" data-id="${i.id}">${i.resolved?'✓':''}</button>
+            <div class="it-main"><div class="t">${esc(i.text)}</div></div>
+            <button class="btn-ico" data-act="dev-issue-del" data-pid="${p.id}" data-id="${i.id}" title="删除">✕</button>
+          </div>`).join('') : '<div class="empty">还没有问题记录</div>'}</div>
+        <div class="row" style="margin-top:10px">
+          <input class="input" id="devIssueInput" placeholder="记一个问题，回车保存" data-enter="dev-issue-add">
+          <button class="btn btn-primary" data-act="dev-issue-add">添加</button>
+        </div>
+      </section>
+    </div>`;
+  }
+
+  const rows = db.projects.length ? db.projects.map(p => {
+    const doneN = p.tasks.filter(t=>t.done).length;
+    const pct = p.tasks.length ? Math.round(doneN/p.tasks.length*100) : 0;
+    const openI = p.issues.filter(i=>!i.resolved).length;
+    return `<div class="card" style="margin-bottom:12px">
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <div class="it-main" data-act="dev-open" data-id="${p.id}" style="cursor:pointer">
+          <div style="font-weight:600;font-size:15px">${esc(p.name)}</div>
+          <div class="muted xs" style="margin-top:2px">${esc(p.desc||'没有项目说明')}</div>
+        </div>
+        <div class="row">
+          <select class="select" data-act="dev-status" data-id="${p.id}" style="width:104px">
+            ${PSTATUS.map(s=>`<option ${s===p.status?'selected':''}>${s}</option>`).join('')}
+          </select>
+          <button class="btn btn-sm" data-act="dev-open" data-id="${p.id}">打开</button>
+          <button class="btn-ico" data-act="dev-del" data-id="${p.id}" title="删除">✕</button>
+        </div>
+      </div>
+      <div class="prog sm"><i style="width:${pct}%"></i></div>
+      <div class="row" style="justify-content:space-between;margin-top:6px">
+        <span class="muted xs">任务 ${doneN}/${p.tasks.length}</span>
+        <span class="muted xs">${openI?'未解决问题 '+openI+' 个':'问题都清完了'}</span>
+      </div>
+    </div>`;
+  }).join('') : '<div class="card"><div class="empty">还没有项目。先建一个，哪怕是"随便写写"的点子。</div></div>';
+
+  return `
+  <div class="ph">
+    <div><h1>开发工作</h1><div class="sub">${db.projects.length} 个项目 · ${db.projects.filter(p=>p.status==='进行中').length} 个进行中</div></div>
+    <button class="btn btn-primary" data-act="dev-new">＋ 新建项目</button>
+  </div>
+  ${rows}`;
+}
+
+/* ============================================================
+   5. 咨询工作
+============================================================ */
+function viewConsult(){
+  const t = todayStr();
+  const list = db.consults.filter(c => cfFilter === '全部' || (cfFilter === '待跟进' ? c.status !== '已完成' : c.status === cfFilter))
+    .sort((a,b) => (a.followUp||'9999').localeCompare(b.followUp||'9999'));
+
+  const rows = list.length ? list.map(c => {
+    const overdue = c.status !== '已完成' && c.followUp && c.followUp <= t;
+    return `<div class="item" style="align-items:flex-start">
+      <div class="it-main">
+        <div class="t"><b>${esc(c.who)}</b> · ${esc(c.topic)}</div>
+        <div class="tagline">
+          <span class="chip">${c.date?fmtDate(c.date):'未记日期'}</span>
+          ${c.followUp?`<span class="chip ${overdue?'high':''}">跟进 ${fmtDate(c.followUp)}</span>`:''}
+          ${overdue?'<span class="chip high">该跟进了</span>':''}
+        </div>
+        ${c.summary?`<div class="muted xs" style="margin-top:5px;white-space:pre-wrap">${esc(c.summary)}</div>`:''}
+      </div>
+      <select class="select" data-act="consult-status" data-id="${c.id}" style="width:104px">
+        ${CSTATUS.map(s=>`<option ${s===c.status?'selected':''}>${s}</option>`).join('')}
+      </select>
+      <button class="btn btn-sm" data-act="consult-edit" data-id="${c.id}">编辑</button>
+      <button class="btn-ico" data-act="consult-del" data-id="${c.id}" title="删除">✕</button>
+    </div>`;
+  }).join('') : '<div class="card"><div class="empty">还没有咨询记录</div></div>';
+
+  return `
+  <div class="ph">
+    <div><h1>咨询工作</h1><div class="sub">${db.consults.filter(c=>c.status!=='已完成').length} 个未完成 · 其中 ${db.consults.filter(c=>c.status!=='已完成'&&c.followUp&&c.followUp<=t).length} 个已到跟进日</div></div>
+    <button class="btn btn-primary" data-act="consult-new">＋ 新建咨询记录</button>
+  </div>
+  <div class="stagebar">
+    ${['全部','待跟进','进行中','已完成'].map(f=>`<button class="pill ${cfFilter===f?'on':''}" data-act="consult-filter" data-f="${f}">${f}</button>`).join('')}
+  </div>
+  <div class="card"><div class="list">${rows}</div></div>`;
+}
+
+/* ============================================================
+   6. 健身
+============================================================ */
+function viewFitness(){
+  const t = todayStr();
+  const wd = String(weekdayNum(t));
+  const todayPlan = db.fitness.week[wd] || '';
+  const logged = db.fitness.logs.some(l => l.date === t);
+  const streak = fitStreak();
+  const logs = db.fitness.logs.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,12);
+
+  const weekRows = [1,2,3,4,5,6,7].map(n => `
+    <div class="weekrow ${String(n)===wd?'today':''}">
+      <div class="day">周${'一二三四五六日'[n-1]}${String(n)===wd?' ·今天':''}</div>
+      <input class="input" value="${esc(db.fitness.week[String(n)]||'')}" data-act="fit-week" data-day="${n}" placeholder="练什么（留空表示休息）">
+    </div>`).join('');
+
+  return `
+  <div class="ph">
+    <div><h1>健身计划</h1><div class="sub">连续打卡 ${streak} 天 · 本周已练 ${db.fitness.logs.filter(l=>l.date>=weekRange()[0]&&l.date<=weekRange()[1]).length} 天</div></div>
+  </div>
+
+  <div class="grid g2">
+    <section class="card">
+      <div class="card-h"><h3>今天练什么</h3><span class="chip ${logged?'ok':''}">${logged?'已打卡':'未打卡'}</span></div>
+      <div style="font-size:15px;font-weight:600;margin:4px 0 12px">${todayPlan ? esc(todayPlan) : '今天没排训练，休息日'}</div>
+      ${logged
+        ? `<button class="btn" data-act="fit-uncheck">撤销今天的打卡</button>`
+        : `<button class="btn btn-primary" data-act="fit-check">完成打卡</button>`}
+      <div class="hr" style="margin:16px 0"></div>
+      <div class="card-h"><h3>每周安排</h3><span class="muted xs">改完自动保存</span></div>
+      ${weekRows}
+    </section>
+
+    <section class="card">
+      <div class="card-h"><h3>打卡记录</h3><span class="muted xs">最近 ${logs.length} 次</span></div>
+      <div class="list">${logs.length ? logs.map(l => `
+        <div class="item">
+          <div class="it-main">
+            <div class="t">${fmtDate(l.date)} · ${weekName(l.date)}</div>
+            <div class="muted xs">${esc(l.note || '—')}</div>
+          </div>
+          <button class="btn-ico" data-act="fit-log-del" data-id="${l.id}" title="删除">✕</button>
+        </div>`).join('') : '<div class="empty">还没有打卡记录</div>'}</div>
+    </section>
+  </div>`;
+}
+
+function fitStreak(){
+  let n = 0, d = todayStr();
+  if(!db.fitness.logs.some(l => l.date === d)) d = shift(d,-1);
+  while(db.fitness.logs.some(l => l.date === d)){ n++; d = shift(d,-1); }
+  return n;
+}
+
+/* ============================================================
+   7. 饮食
+============================================================ */
+function viewFood(){
+  const d = foodDate;
+  const items = db.food.items.filter(i => i.date === d);
+  const freq = {};
+  db.food.items.forEach(i => { freq[i.text] = (freq[i.text]||0) + 1; });
+  const common = Object.keys(freq).sort((a,b)=>freq[b]-freq[a]).slice(0,14);
+
+  const hour = new Date().getHours();
+  const defaultSlot = hour < 10 ? '早餐' : hour < 15 ? '午餐' : hour < 21 ? '晚餐' : '加餐';
+
+  const slotHtml = MEALS.map(s => {
+    const list = items.filter(i => i.slot === s);
+    return `<div style="margin-bottom:12px">
+      <div class="row" style="justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:13px;font-weight:600">${s}</span>
+        <span class="muted xs">${list.length} 项</span>
+      </div>
+      <div class="list">${list.map(i => `
+        <div class="item" style="padding:6px 2px">
+          <div class="it-main"><div class="t">${esc(i.text)}</div></div>
+          <button class="btn-ico" data-act="food-del" data-id="${i.id}" title="删除">✕</button>
+        </div>`).join('')}</div>
+      <div class="row" style="margin-top:4px">
+        <input class="input" id="food-${s}" placeholder="加一项到${s}，回车保存" data-enter="food-add" data-slot="${s}">
+        <button class="btn btn-sm" data-act="food-add" data-slot="${s}">加入</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="ph">
+    <div><h1>饮食计划</h1><div class="sub">${fmtDate(d)} · ${weekName(d)} · 已记 ${items.length} 项</div></div>
+    <div class="row">
+      <button class="btn" data-act="food-shift" data-n="-1">‹ 前一天</button>
+      <button class="btn" data-act="food-today">今天</button>
+      <button class="btn" data-act="food-shift" data-n="1">后一天 ›</button>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <section class="card">${slotHtml}</section>
+    <section class="card">
+      <div class="card-h"><h3>常吃的东西</h3><span class="muted xs">点一下直接记录</span></div>
+      <div class="row" style="margin-bottom:10px">
+        <span class="muted xs">加到</span>
+        <select class="select" id="commonSlot" style="width:110px">
+          ${MEALS.map(m=>`<option ${m===defaultSlot?'selected':''}>${m}</option>`).join('')}
+        </select>
+      </div>
+      <div class="tagline">
+        ${common.length ? common.map(x=>`<button class="pill" data-act="food-quick" data-text="${esc(x)}">${esc(x)}</button>`).join('') : '<span class="muted xs">记录几次后，这里会自动出现你的常用项</span>'}
+      </div>
+      <div class="hr" style="margin:16px 0"></div>
+      <div class="muted xs">只记录吃了什么，不算热量。坚持记录比精确计算更管用。</div>
+    </section>
+  </div>`;
+}
+
+/* ============================================================
+   8. 游戏娱乐
+============================================================ */
+function viewGame(){
+  const [mon,sun] = weekRange();
+  const weekPlays = db.plays.filter(p => p.date >= mon && p.date <= sun);
+  const totalMin = weekPlays.reduce((n,p)=>n+(+p.minutes||0),0);
+
+  const rows = db.games.length ? db.games.map(g => {
+    const mins = weekPlays.filter(p=>p.gameId===g.id).reduce((n,p)=>n+(+p.minutes||0),0);
+    return `<div class="item">
+      <div class="it-main">
+        <div class="t">${esc(g.name)}</div>
+        <div class="muted xs">本周 ${mins} 分钟</div>
+      </div>
+      <select class="select" data-act="game-status" data-id="${g.id}" style="width:96px">
+        ${GSTATUS.map(s=>`<option ${s===g.status?'selected':''}>${s}</option>`).join('')}
+      </select>
+      <button class="btn btn-sm" data-act="game-log" data-id="${g.id}" data-min="30">+30分</button>
+      <button class="btn btn-sm" data-act="game-log" data-id="${g.id}" data-min="60">+1时</button>
+      <button class="btn btn-sm" data-act="game-log-custom" data-id="${g.id}">记时长</button>
+      <button class="btn-ico" data-act="game-del" data-id="${g.id}" title="删除">✕</button>
+    </div>`;
+  }).join('') : '<div class="empty">还没有游戏，先加一个</div>';
+
+  const recents = db.plays.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10).map(p => {
+    const g = db.games.find(x=>x.id===p.gameId);
+    return `<div class="item">
+      <div class="it-main"><div class="t">${esc(g?g.name:'（已删除）')} · ${p.minutes} 分钟</div><div class="muted xs">${fmtDate(p.date)}</div></div>
+      <button class="btn-ico" data-act="play-del" data-id="${p.id}" title="删除">✕</button>
+    </div>`;
+  }).join('') || '<div class="empty">还没有记录</div>';
+
+  return `
+  <div class="ph">
+    <div><h1>游戏娱乐</h1><div class="sub">本周累计 ${Math.floor(totalMin/60)} 小时 ${totalMin%60} 分钟 · 共 ${db.games.length} 个游戏</div></div>
+    <button class="btn btn-primary" data-act="game-new">＋ 添加游戏</button>
+  </div>
+  <div class="grid g2">
+    <section class="card">
+      <div class="card-h"><h3>游戏库</h3><span class="muted xs">${db.games.filter(g=>g.status==='在玩').length} 个在玩</span></div>
+      <div class="list">${rows}</div>
+    </section>
+    <section class="card">
+      <div class="card-h"><h3>最近记录</h3></div>
+      <div class="list">${recents}</div>
+    </section>
+  </div>`;
+}
+
+/* ============================================================
+   9. 设置
+============================================================ */
+function viewSettings(){
+  const counts = [
+    ['计划', db.plans.length], ['备忘', db.memos.length], ['灵感', db.ideas.length],
+    ['内容', db.contents.length], ['数据记录', db.metrics.length], ['项目', db.projects.length],
+    ['咨询', db.consults.length], ['健身打卡', db.fitness.logs.length], ['饮食记录', db.food.items.length],
+    ['游戏', db.games.length], ['游戏时长记录', db.plays.length]
+  ];
+  const bytes = new Blob([JSON.stringify(db)]).size;
+
+  return `
+  <div class="ph"><div><h1>数据与设置</h1><div class="sub">数据只保存在这台电脑的浏览器里，不上传任何服务器</div></div></div>
+
+  <div class="grid g2">
+    <section class="card">
+      <div class="card-h"><h3>备份与恢复</h3><span class="muted xs">当前占用 ${(bytes/1024).toFixed(1)} KB</span></div>
+      <p class="muted xs" style="margin:0 0 12px">换电脑、清理浏览器缓存、换浏览器都会导致数据丢失。建议每月导出一次备份文件保存到本地。</p>
+      <div class="row">
+        <button class="btn btn-primary" data-act="export">导出备份文件</button>
+        <button class="btn" data-act="import">从备份文件导入</button>
+        <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+      </div>
+      <div class="hr" style="margin:16px 0"></div>
+      <div class="card-h"><h3 style="color:var(--danger)">清空所有数据</h3></div>
+      <p class="muted xs" style="margin:0 0 10px">会删除全部模块的数据，无法恢复。清空前请先导出备份。</p>
+      <button class="btn" data-act="clear" style="color:var(--danger);border-color:#f3c9c6">清空全部数据</button>
+    </section>
+
+    <section class="card">
+      <div class="card-h"><h3>数据概况</h3><button class="btn btn-sm" data-act="reload">刷新页面</button></div>
+      <div class="list">${counts.map(([k,n])=>`<div class="item" style="padding:7px 2px"><div class="it-main t">${k}</div><span class="muted xs">${n}</span></div>`).join('')}</div>
+    </section>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><h3>使用说明</h3></div>
+    <div class="muted xs" style="line-height:1.9">
+      · 所有改动即时保存，没有保存按钮，刷新和关机都不会丢（前提是不清理浏览器数据）。<br>
+      · 这个文件就是整个 App，双击用浏览器打开即可；把它放在固定位置，别删。<br>
+      · 如果换电脑：把 HTML 文件和导出的备份 json 一起拷过去，打开文件后导入备份。<br>
+      · 想改标题栏名字或配色，可以在文件开头的 <code>:root</code> 里改颜色变量。
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   弹窗
+============================================================ */
+function closeModal(){ document.getElementById('modal-root').innerHTML = ''; }
+function openModal(opt){
+  const root = document.getElementById('modal-root');
+  root.innerHTML = `<div class="overlay"><div class="modal">
+    <div class="modal-h"><h3>${esc(opt.title)}</h3><button class="btn-ico" data-act="modal-close">✕</button></div>
+    <div class="modal-b">${opt.body}</div>
+    <div class="modal-f">
+      <button class="btn" data-act="modal-close">取消</button>
+      <button class="btn btn-primary" id="modalSave">${esc(opt.submit||'保存')}</button>
+    </div>
+  </div></div>`;
+  root.querySelector('.overlay').addEventListener('click', e => { if(e.target.classList.contains('overlay')) closeModal(); });
+  root.querySelector('#modalSave').addEventListener('click', () => {
+    if(opt.onSave() !== false){ closeModal(); }
+  });
+  const first = root.querySelector('input,textarea,select');
+  if(first) setTimeout(()=>first.focus(), 30);
+}
+
+function contentModal(id){
+  const c = db.contents.find(x => x.id === id) || {title:'',platform:'小红书',planDate:'',stage:'选题',body:''};
+  openModal({
+    title: id ? '编辑内容' : '新建内容',
+    submit: '保存',
+    body: `
+      <div class="field"><label>标题 / 选题</label><input class="input" id="cTitle" value="${esc(c.title)}" placeholder="这篇要写什么"></div>
+      <div class="row" style="gap:10px">
+        <div class="field" style="flex:1"><label>平台</label><select class="select" id="cPlat">${PLATFORMS.map(p=>`<option ${p===c.platform?'selected':''}>${p}</option>`).join('')}</select></div>
+        <div class="field" style="flex:1"><label>计划发布</label><input class="input" type="date" id="cDate" value="${c.planDate||''}"></div>
+        <div class="field" style="flex:1"><label>阶段</label><select class="select" id="cStage">${STAGES.map(s=>`<option ${s===c.stage?'selected':''}>${s}</option>`).join('')}</select></div>
+      </div>
+      <div class="field"><label>正文 / 脚本</label><textarea class="input" id="cBody" rows="9" placeholder="大纲、脚本、正文都可以写在这里">${esc(c.body)}</textarea></div>`,
+    onSave(){
+      const title = val('cTitle');
+      if(!title){ alert('先填个标题'); return false; }
+      const data = {title, platform: val('cPlat'), planDate: val('cDate'), stage: val('cStage'), body: val('cBody')};
+      if(id){ Object.assign(c, data); }
+      else { db.contents.unshift(Object.assign({id:uid(), created:Date.now()}, data)); }
+      save(); render();
+    }
+  });
+}
+
+function metricModal(){
+  if(!db.contents.length){ alert('先在「内容创作」里建一条内容'); return; }
+  const opts = db.contents.slice().sort((a,b)=>(b.created||0)-(a.created||0));
+  openModal({
+    title: '记录发布数据',
+    body: `
+      <div class="field"><label>哪条内容</label><select class="select" id="mContent">${opts.map(c=>`<option value="${c.id}">${esc(c.title)}</option>`).join('')}</select></div>
+      <div class="field"><label>日期</label><input class="input" type="date" id="mDate" value="${todayStr()}"></div>
+      <div class="row" style="gap:10px">
+        <div class="field" style="flex:1"><label>播放 / 阅读</label><input class="input" id="mViews" type="number" min="0" value="0"></div>
+        <div class="field" style="flex:1"><label>点赞</label><input class="input" id="mLikes" type="number" min="0" value="0"></div>
+      </div>
+      <div class="field"><label>备注（可选）</label><input class="input" id="mNote" placeholder="比如：这周涨粉主要靠它"></div>`,
+    onSave(){
+      db.metrics.unshift({id:uid(), contentId: val('mContent'), date: val('mDate')||todayStr(), views: +val('mViews')||0, likes: +val('mLikes')||0, note: val('mNote')});
+      save(); render();
+    }
+  });
+}
+
+function devModal(id){
+  const p = db.projects.find(x=>x.id===id) || {name:'',desc:'',status:'想法'};
+  openModal({
+    title: id ? '编辑项目' : '新建项目',
+    body: `
+      <div class="field"><label>项目名</label><input class="input" id="pName" value="${esc(p.name)}" placeholder="例如：个人博客改版"></div>
+      <div class="field"><label>一句话说明</label><input class="input" id="pDesc" value="${esc(p.desc)}" placeholder="想做成什么样"></div>
+      <div class="field"><label>状态</label><select class="select" id="pStatus">${PSTATUS.map(s=>`<option ${s===p.status?'selected':''}>${s}</option>`).join('')}</select></div>`,
+    onSave(){
+      const name = val('pName');
+      if(!name){ alert('先填项目名'); return false; }
+      if(id){ Object.assign(p, {name, desc: val('pDesc'), status: val('pStatus')}); }
+      else { db.projects.unshift({id:uid(), name, desc: val('pDesc'), status: val('pStatus'), tasks:[], issues:[]}); }
+      save(); render();
+    }
+  });
+}
+
+function consultModal(id){
+  const c = db.consults.find(x=>x.id===id) || {who:'',topic:'',date:todayStr(),status:'待跟进',followUp:'',summary:''};
+  openModal({
+    title: id ? '编辑咨询记录' : '新建咨询记录',
+    body: `
+      <div class="row" style="gap:10px">
+        <div class="field" style="flex:1"><label>咨询对象</label><input class="input" id="sWho" value="${esc(c.who)}" placeholder="姓名 / 客户"></div>
+        <div class="field" style="flex:1"><label>主题</label><input class="input" id="sTopic" value="${esc(c.topic)}" placeholder="聊什么"></div>
+      </div>
+      <div class="row" style="gap:10px">
+        <div class="field" style="flex:1"><label>咨询日期</label><input class="input" type="date" id="sDate" value="${c.date||''}"></div>
+        <div class="field" style="flex:1"><label>下次跟进</label><input class="input" type="date" id="sFollow" value="${c.followUp||''}"></div>
+        <div class="field" style="flex:1"><label>状态</label><select class="select" id="sStatus">${CSTATUS.map(s=>`<option ${s===c.status?'selected':''}>${s}</option>`).join('')}</select></div>
+      </div>
+      <div class="field"><label>记录 / 结论</label><textarea class="input" id="sSum" rows="5" placeholder="聊了什么、给了什么建议、下一步">${esc(c.summary)}</textarea></div>`,
+    onSave(){
+      const who = val('sWho');
+      if(!who){ alert('先填咨询对象'); return false; }
+      const data = {who, topic: val('sTopic'), date: val('sDate'), followUp: val('sFollow'), status: val('sStatus'), summary: val('sSum')};
+      if(id){ Object.assign(c, data); } else { db.consults.unshift(Object.assign({id:uid()}, data)); }
+      save(); render();
+    }
+  });
+}
+
+/* ============================================================
+   事件
+============================================================ */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if(!el) return;
+  const a = el.dataset.act;
+  const id = el.dataset.id;
+
+  switch(a){
+    /* 导航 */
+    case 'go': route = el.dataset.route; devOpen = null; render(); break;
+    case 'reload': location.reload(); break;
+
+    /* 计划 */
+    case 'home-plan': addPlan(todayStr(), 'homePlan'); break;
+    case 'plan-add': addPlan(planDate, 'planText'); break;
+    case 'plan-toggle': {
+      const p = db.plans.find(x=>x.id===id); if(p){ p.done = !p.done; save(); render(); } break;
+    }
+    case 'plan-del': {
+      if(!confirm('删除这条计划？')) return;
+      db.plans = db.plans.filter(x=>x.id!==id); save(); render(); break;
+    }
+    case 'plan-later': {
+      const p = db.plans.find(x=>x.id===id);
+      if(p){ p.date = shift(p.date,1); save(); render(); } break;
+    }
+    case 'plan-shift': planDate = shift(planDate, +el.dataset.n); render(); break;
+    case 'plan-today': planDate = todayStr(); render(); break;
+
+    /* 备忘 */
+    case 'memo-add': addMemo(); break;
+    case 'memo-del': db.memos = db.memos.filter(x=>x.id!==id); save(); render(); break;
+
+    /* 自媒体 */
+    case 'sm-tab': smTab = el.dataset.tab; render(); break;
+    case 'idea-add': addIdea(); break;
+    case 'idea-use': {
+      const i = db.ideas.find(x=>x.id===id);
+      if(i){
+        db.contents.unshift({id:uid(), title:i.text, platform:'小红书', planDate:'', stage:'选题', body:'', created:Date.now()});
+        i.used = true; smTab = 'content'; save(); render();
+      } break;
+    }
+    case 'idea-del': db.ideas = db.ideas.filter(x=>x.id!==id); save(); render(); break;
+    case 'idea-toggle-used': showUsedIdeas = !showUsedIdeas; render(); break;
+    case 'cm-stage': cmStage = el.dataset.s; render(); break;
+    case 'content-new': contentModal(null); break;
+    case 'content-edit': contentModal(id); break;
+    case 'content-del': {
+      if(!confirm('删除这条内容？')) return;
+      db.contents = db.contents.filter(x=>x.id!==id);
+      db.metrics = db.metrics.filter(m=>m.contentId!==id);
+      save(); render(); break;
+    }
+    case 'metric-new': metricModal(); break;
+    case 'metric-del': db.metrics = db.metrics.filter(x=>x.id!==id); save(); render(); break;
+
+    /* 开发 */
+    case 'dev-new': devModal(null); break;
+    case 'dev-edit': devModal(id); break;
+    case 'dev-open': devOpen = id; render(); break;
+    case 'dev-close': devOpen = null; render(); break;
+    case 'dev-del': {
+      if(!confirm('删除这个项目（含任务和问题记录）？')) return;
+      db.projects = db.projects.filter(x=>x.id!==id);
+      if(devOpen === id) devOpen = null;
+      save(); render(); break;
+    }
+    case 'dev-task-add': {
+      const p = db.projects.find(x=>x.id===devOpen); const v = val('devTaskInput');
+      if(p && v){ p.tasks.push({id:uid(), text:v, done:false}); save(); render(); }
+      else if(p) document.getElementById('devTaskInput').focus();
+      break;
+    }
+    case 'dev-task-toggle': {
+      const p = db.projects.find(x=>x.id===el.dataset.pid);
+      const t = p && p.tasks.find(x=>x.id===id);
+      if(t){ t.done = !t.done; save(); render(); } break;
+    }
+    case 'dev-task-del': {
+      const p = db.projects.find(x=>x.id===el.dataset.pid);
+      if(p){ p.tasks = p.tasks.filter(x=>x.id!==id); save(); render(); } break;
+    }
+    case 'dev-issue-add': {
+      const p = db.projects.find(x=>x.id===devOpen); const v = val('devIssueInput');
+      if(p && v){ p.issues.push({id:uid(), text:v, resolved:false}); save(); render(); }
+      break;
+    }
+    case 'dev-issue-toggle': {
+      const p = db.projects.find(x=>x.id===el.dataset.pid);
+      const i = p && p.issues.find(x=>x.id===id);
+      if(i){ i.resolved = !i.resolved; save(); render(); } break;
+    }
+    case 'dev-issue-del': {
+      const p = db.projects.find(x=>x.id===el.dataset.pid);
+      if(p){ p.issues = p.issues.filter(x=>x.id!==id); save(); render(); } break;
+    }
+
+    /* 咨询 */
+    case 'consult-new': consultModal(null); break;
+    case 'consult-edit': consultModal(id); break;
+    case 'consult-del': {
+      if(!confirm('删除这条咨询记录？')) return;
+      db.consults = db.consults.filter(x=>x.id!==id); save(); render(); break;
+    }
+    case 'consult-filter': cfFilter = el.dataset.f; render(); break;
+
+    /* 健身 */
+    case 'fit-check': {
+      const t = todayStr();
+      const note = db.fitness.week[String(weekdayNum(t))] || '';
+      db.fitness.logs.push({id:uid(), date:t, note});
+      save(); render(); break;
+    }
+    case 'fit-uncheck': {
+      db.fitness.logs = db.fitness.logs.filter(l=>l.date!==todayStr()); save(); render(); break;
+    }
+    case 'fit-log-del': db.fitness.logs = db.fitness.logs.filter(l=>l.id!==id); save(); render(); break;
+
+    /* 饮食 */
+    case 'food-shift': foodDate = shift(foodDate, +el.dataset.n); render(); break;
+    case 'food-today': foodDate = todayStr(); render(); break;
+    case 'food-add': addFood(el.dataset.slot); break;
+    case 'food-del': db.food.items = db.food.items.filter(x=>x.id!==id); save(); render(); break;
+    case 'food-quick': {
+      const slot = document.getElementById('commonSlot');
+      db.food.items.push({id:uid(), date:foodDate, slot: slot ? slot.value : '午餐', text: el.dataset.text});
+      save(); render(); break;
+    }
+
+    /* 游戏 */
+    case 'game-new': gameModal(); break;
+    case 'game-log': {
+      db.plays.push({id:uid(), gameId:id, date:todayStr(), minutes:+el.dataset.min||30});
+      save(); render(); break;
+    }
+    case 'game-log-custom': gameLogModal(id); break;
+    case 'game-del': {
+      if(!confirm('删除这个游戏（含时长记录）？')) return;
+      db.games = db.games.filter(x=>x.id!==id);
+      db.plays = db.plays.filter(p=>p.gameId!==id);
+      save(); render(); break;
+    }
+    case 'play-del': db.plays = db.plays.filter(x=>x.id!==id); save(); render(); break;
+
+    /* 设置 */
+    case 'export': exportData(); break;
+    case 'import': document.getElementById('importFile').click(); break;
+    case 'clear': {
+      if(!confirm('确定清空全部数据？此操作不能撤销。')) return;
+      if(!confirm('再确认一次：所有计划、内容、记录都会被删除。')) return;
+      db = blank(); save(); render(); break;
+    }
+
+    /* 弹窗 */
+    case 'modal-close': closeModal(); break;
+  }
+});
+
+document.addEventListener('change', e => {
+  const el = e.target.closest('[data-act]');
+  if(!el) return;
+  const a = el.dataset.act, id = el.dataset.id;
+
+  if(a === 'plan-date'){ planDate = el.value || todayStr(); render(); }
+  if(a === 'content-stage'){ const c = db.contents.find(x=>x.id===id); if(c){ c.stage = el.value; save(); render(); } }
+  if(a === 'dev-status'){ const p = db.projects.find(x=>x.id===id); if(p){ p.status = el.value; save(); render(); } }
+  if(a === 'consult-status'){ const c = db.consults.find(x=>x.id===id); if(c){ c.status = el.value; save(); render(); } }
+  if(a === 'fit-week'){ db.fitness.week[el.dataset.day] = el.value.trim(); save(); }
+  if(a === 'game-status'){ const g = db.games.find(x=>x.id===id); if(g){ g.status = el.value; save(); render(); } }
+});
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ closeModal(); return; }
+  const cmd = e.target.dataset && e.target.dataset.enter;
+  if(!cmd || e.key !== 'Enter') return;
+  e.preventDefault();
+  if(cmd === 'home-plan') addPlan(todayStr(), 'homePlan');
+  else if(cmd === 'plan-add') addPlan(planDate, 'planText');
+  else if(cmd === 'memo-add') addMemo();
+  else if(cmd === 'idea-add') addIdea();
+  else if(cmd === 'dev-task-add') document.querySelector('[data-act="dev-task-add"]').click();
+  else if(cmd === 'dev-issue-add') document.querySelector('[data-act="dev-issue-add"]').click();
+  else if(cmd === 'food-add') addFood(e.target.dataset.slot);
+});
+
+document.addEventListener('change', e => {
+  if(e.target && e.target.id === 'importFile'){
+    const f = e.target.files && e.target.files[0];
+    if(!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if(!data || typeof data !== 'object' || !('version' in data)) throw new Error('格式不对');
+        if(!confirm('导入会覆盖当前全部数据，继续吗？')) return;
+        db = normalize(data);
+        save(); render(); alert('导入完成');
+      } catch(err){ alert('导入失败：文件不是有效的备份'); }
+    };
+    reader.readAsText(f);
+    e.target.value = '';
+  }
+});
+
+/* ============================================================
+   写入函数
+============================================================ */
+function addPlan(date, inputId){
+  const el = document.getElementById(inputId);
+  const text = el ? el.value.trim() : '';
+  if(!text){ if(el) el.focus(); return; }
+  const slotEl = document.getElementById('planSlot');
+  const prioEl = document.getElementById('planPrio');
+  db.plans.push({
+    id: uid(), date, text,
+    slot: slotEl ? slotEl.value : '未定',
+    priority: prioEl ? prioEl.value : 'mid',
+    done: false
+  });
+  save(); render();
+}
+
+function addMemo(){
+  const el = document.getElementById('memoInput');
+  const text = el ? el.value.trim() : '';
+  if(!text) return;
+  db.memos.unshift({id:uid(), text, ts:Date.now()});
+  if(db.memos.length > 300) db.memos.length = 300;
+  save(); render();
+}
+
+function addIdea(){
+  const t = document.getElementById('ideaText');
+  const g = document.getElementById('ideaTags');
+  const text = t ? t.value.trim() : '';
+  if(!text) return;
+  db.ideas.unshift({id:uid(), text, tags: g ? g.value.trim() : '', ts:Date.now(), used:false});
+  save(); render();
+}
+
+function addFood(slot){
+  const el = document.getElementById('food-' + slot);
+  const text = el ? el.value.trim() : '';
+  if(!text) return;
+  db.food.items.push({id:uid(), date:foodDate, slot, text});
+  save(); render();
+}
+
+function gameModal(){
+  openModal({
+    title: '添加游戏',
+    body: `
+      <div class="field"><label>游戏名</label><input class="input" id="gName" placeholder="例如：空洞骑士"></div>
+      <div class="field"><label>状态</label><select class="select" id="gStatus">${GSTATUS.map(s=>`<option ${s==='在玩'?'selected':''}>${s}</option>`).join('')}</select></div>`,
+    onSave(){
+      const name = val('gName');
+      if(!name){ alert('先填游戏名'); return false; }
+      db.games.unshift({id:uid(), name, status: val('gStatus')});
+      save(); render();
+    }
+  });
+}
+
+function gameLogModal(id){
+  const g = db.games.find(x=>x.id===id);
+  openModal({
+    title: '记录时长 · ' + (g ? g.name : ''),
+    body: `
+      <div class="row" style="gap:10px">
+        <div class="field" style="flex:1"><label>日期</label><input class="input" type="date" id="pDate" value="${todayStr()}"></div>
+        <div class="field" style="flex:1"><label>分钟</label><input class="input" type="number" min="1" id="pMin" value="45"></div>
+      </div>`,
+    onSave(){
+      const min = +val('pMin') || 0;
+      if(min <= 0){ alert('填个有效分钟数'); return false; }
+      db.plays.push({id:uid(), gameId:id, date: val('pDate')||todayStr(), minutes:min});
+      save(); render();
+    }
+  });
+}
+
+function exportData(){
+  const blob = new Blob([JSON.stringify(db,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '工作台备份-' + todayStr() + '.json';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 3000);
+}
+
+/* ============================================================
+   启动
+============================================================ */
+render();
+</script>
+</body>
+</html>
