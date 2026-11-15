@@ -108,4 +108,24 @@ T('没有内容时记录数据被拦下并提示', function(){
   TA(lastAlert.indexOf('内容') > -1, '未提示先建内容：' + lastAlert);
 });
 
+T('数据图表：趋势面积图 + 平台条形图 + 范围切换', function(){
+  db.contents = [
+    { id:'c1', title:'A', platform:'小红书', planDate:'', stage:'已发布', body:'', created:1 },
+    { id:'c2', title:'B', platform:'B站', planDate:'', stage:'已发布', body:'', created:2 }
+  ];
+  db.metrics = [
+    { id:'m1', contentId:'c1', date: todayStr(), views: 500, likes: 20, note:'' },
+    { id:'m2', contentId:'c2', date: shift(todayStr(),-1), views: 300, likes: 10, note:'' }
+  ];
+  save(); smTab = 'data'; mRange = 14; render();
+  TA(TQ('svg.chart'), '没有趋势图');
+  TA(TALL('svg.chart circle').length === 14, '趋势点数量=' + TALL('svg.chart circle').length);
+  TA(TALL('.bar-row').length === 2, '平台条数=' + TALL('.bar-row').length);
+  TA(TALL('.bar-row')[0].textContent.indexOf('小红书') > -1, '平台未按播放降序：' + TALL('.bar-row')[0].textContent);
+  TCLICK('[data-act="m-range"][data-n="7"]');
+  TA(mRange === 7, '范围未切换');
+  TA(TALL('svg.chart circle').length === 7, '7 天点数=' + TALL('svg.chart circle').length);
+  TA(TTEXT().indexOf('合计 800 次播放') > -1, '7 天合计不对');
+});
+
 TDONE();

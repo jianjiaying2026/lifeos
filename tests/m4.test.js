@@ -11,37 +11,72 @@ T('周安排改动即时保存，重载后保留', function(){
   TA(TQ('[data-act="fit-week"][data-day="3"]').value === '腿 + 核心', '重载后丢失');
 });
 
-T('今日训练显示当天安排，打卡后状态与文案切换', function(){
+T('记录训练：部位/动作/组数/次数落库，当天计划同时显示', function(){
   var wd = String(weekdayNum(todayStr()));
-  db.fitness.week[wd] = '胸 + 三头'; save(); render();
-  TA(TTEXT().indexOf('胸 + 三头') > -1, '今日安排未显示');
-  TA(TTEXT().indexOf('未打卡') > -1, '初始状态不对');
-  TCLICK('[data-act="fit-check"]');
-  TA(db.fitness.logs.length === 1, '打卡未记录');
-  TA(db.fitness.logs[0].note === '胸 + 三头', '打卡备注未取当天安排');
-  TA(TTEXT().indexOf('已打卡') > -1, '状态未切换');
-  TA(TTEXT().indexOf('撤销今天的打卡') > -1, '未出现撤销入口');
+  db.fitness.week[wd] = '胸 + 三头'; save();
+  fitDate = todayStr(); fitMonth = todayStr().slice(0,7); render();
+  TA(TTEXT().indexOf('当天计划：胸 + 三头') > -1, '当天计划未显示');
+  TA(TTEXT().indexOf('未记录') > -1, '初始状态不对');
+  TSET('#fitPart', '胸');
+  TFILL('#fitEx', '卧推');
+  TFILL('#fitSets', '4');
+  TFILL('#fitReps', '12');
+  TCLICK('[data-act="fit-add"]');
+  var l = db.fitness.logs[0];
+  TA(l && l.date === todayStr(), '记录未落位到选中的日期');
+  TA(l.part === '胸' && l.ex === '卧推', '部位/动作不对：' + l.part + '/' + l.ex);
+  TA(l.sets === 4 && l.reps === 12, '组次不对：' + l.sets + 'x' + l.reps);
+  TA(TTEXT().indexOf('4 组 × 12 次') > -1, '明细未显示组次');
+  TA(TTEXT().indexOf('1 个动作') > -1, '当天动作数未显示');
+  TA(TTEXT().indexOf('连续打卡 1 天') > -1, '连续天数应为 1');
 });
 
-T('连续打卡天数：今天+昨天=2；撤销今天后按昨天算=1', function(){
+T('空动作被拦下，不写入空记录', function(){
+  TFILL('#fitEx', '');
+  TCLICK('[data-act="fit-add"]');
+  TA(db.fitness.logs.length === 1, '空动作竟然写入：' + db.fitness.logs.length);
+  var t = document.getElementById('toast');
+  TA(t && t.textContent.indexOf('动作') > -1, '未提示：' + (t ? t.textContent : '无提示'));
+});
+
+T('连续打卡：今天+昨天=2；删掉今天后=1', function(){
   db.fitness.logs = [
-    { id:'a', date: todayStr(), note:'' },
-    { id:'b', date: shift(todayStr(), -1), note:'' }
+    { id:'a', date: todayStr(), part:'胸', ex:'卧推', sets:3, reps:10 },
+    { id:'b', date: shift(todayStr(), -1), part:'背', ex:'划船', sets:3, reps:10 }
   ];
-  save(); render();
-  TA(TTEXT().indexOf('连续打卡 2 天') > -1, '连续天数应为 2：' + TTEXT().match(/连续打卡 \d+ 天/));
-  TCLICK('[data-act="fit-uncheck"]');
-  TA(db.fitness.logs.length === 1, '撤销失败');
-  TA(TTEXT().indexOf('连续打卡 1 天') > -1, '撤销后连续天数应为 1');
+  save(); fitDate = todayStr(); fitMonth = todayStr().slice(0,7); render();
+  TA(TTEXT().indexOf('连续打卡 2 天') > -1, '应为 2：' + (TTEXT().match(/连续打卡 \d+ 天/) || ['(未找到)'])[0]);
+  TQ('[data-act="fit-del"]').click();
+  TA(db.fitness.logs.length === 1, '删除失败');
+  TA(TTEXT().indexOf('连续打卡 1 天') > -1, '删掉今天后应为 1');
 });
 
 T('中断一天后连续天数重新计数', function(){
   db.fitness.logs = [
-    { id:'a', date: shift(todayStr(), -2), note:'' },
-    { id:'b', date: shift(todayStr(), -3), note:'' }
+    { id:'a', date: shift(todayStr(), -2), part:'腿', ex:'深蹲', sets:5, reps:5 },
+    { id:'b', date: shift(todayStr(), -3), part:'肩', ex:'推举', sets:4, reps:8 }
   ];
-  save(); render();
-  TA(TTEXT().indexOf('连续打卡 0 天') > -1, '断档后应从 0 开始：' + TTEXT().match(/连续打卡 \d+ 天/));
+  save(); fitDate = todayStr(); render();
+  TA(TTEXT().indexOf('连续打卡 0 天') > -1, '断档后应从 0 开始：' + (TTEXT().match(/连续打卡 \d+ 天/) || ['(未找到)'])[0]);
+});
+
+T('日历：切月、点某天、在该天记录、回到今天', function(){
+  db.fitness.logs = []; save();
+  fitDate = todayStr(); fitMonth = todayStr().slice(0,7); render();
+  var prev = shiftMonth(fitMonth, -1);
+  TCLICK('[data-act="fit-month"][data-n="-1"]');
+  TA(fitMonth === prev, '月份未切换：' + fitMonth);
+  var target = prev + '-05';
+  TQ('[data-act="cal-pick"][data-date="' + target + '"]').click();
+  TA(fitDate === target, '点击日历未切换日期：' + fitDate);
+  TFILL('#fitEx', '深蹲'); TFILL('#fitSets', '5'); TFILL('#fitReps', '5');
+  TCLICK('[data-act="fit-add"]');
+  TA(db.fitness.logs[0].date === target, '记录日期错误：' + db.fitness.logs[0].date);
+  TA(TTEXT().indexOf('5 组 × 5 次') > -1, '明细未显示组次');
+  TA(TTEXT().indexOf('1 个动作') > -1, '日历当天未显示动作数');
+  TCLICK('[data-act="fit-today"]');
+  TA(fitDate === todayStr(), '回到今天失败');
+  TA(fitMonth === todayStr().slice(0,7), '月份未回到本月');
 });
 
 T('饮食：按钮与回车都能落到对应餐次', function(){

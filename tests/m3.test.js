@@ -15,8 +15,14 @@ T('新建项目：必填校验 + 默认状态为「想法」', function(){
   TA(Array.isArray(db.projects[0].tasks) && Array.isArray(db.projects[0].issues), '子集合未初始化');
 });
 
-T('任务勾选后进度条按比例变化（1/2=50%）', function(){
-  TCLICK('[data-act="dev-open"]');
+T('新建项目后直接进入详情，工作项入口可见', function(){
+  TA(devOpen === db.projects[0].id, '未自动进入项目详情');
+  TA(TTEXT().indexOf('工作项') > -1, '详情页没有工作项区块');
+  TA(TQ('#devTaskInput'), '没有工作项输入框');
+  TA(TQ('[data-act="dev-item-new"]'), '没有「新增工作项」按钮');
+});
+
+T('工作项勾选后进度条按比例变化（1/2=50%）', function(){
   TFILL('#devTaskInput', '搭框架'); TCLICK('[data-act="dev-task-add"]');
   TFILL('#devTaskInput', '写样式'); TCLICK('[data-act="dev-task-add"]');
   TA(db.projects[0].tasks.length === 2, '任务数=' + db.projects[0].tasks.length);
@@ -54,6 +60,22 @@ T('任务删除后进度条重算', function(){
   undone.click();
   TA(db.projects[0].tasks.length === before - 1, '任务未删除');
   TA(TQ('.prog i').style.width === '100%', '删除后进度=' + TQ('.prog i').style.width);
+});
+
+T('从项目列表直接新增工作项，不必先进项目', function(){
+  TCLICK('[data-act="dev-close"]');
+  TA(devOpen === null, '未回到列表');
+  TCLICK('[data-act="dev-item-new"]');
+  TFILL('#wiText', '写部署脚本');
+  TCLICK('#modalSave');
+  TA(db.projects[0].tasks.some(function(t){ return t.text === '写部署脚本'; }), '列表页新增工作项失败');
+  /* 详情页的「＋ 新增工作项」按钮同样可用 */
+  TCLICK('[data-act="dev-open"]');
+  TA(TQ('[data-act="dev-item-new"]'), '详情页没有新增工作项按钮');
+  TCLICK('[data-act="dev-item-new"]');
+  TFILL('#wiText', '补 README');
+  TCLICK('#modalSave');
+  TA(db.projects[0].tasks.some(function(t){ return t.text === '补 README'; }), '详情页新增工作项失败');
 });
 
 T('问题记录：新增、标记解决、未解决数联动', function(){
@@ -123,6 +145,17 @@ T('咨询编辑：结论与跟进日可修改', function(){
   TCLICK('#modalSave');
   TA(db.consults[0].summary === '已给作品集清单', '结论未保存');
   TA(db.consults[0].followUp === shift(todayStr(), 5), '跟进日未保存');
+});
+
+T('咨询删除：取消则保留，确认后移除', function(){
+  route = 'consult'; cfFilter = '全部'; render();
+  confirmAnswer = false;
+  TQ('[data-act="consult-del"]').click();
+  TA(db.consults.length === 1, '取消后仍被删除');
+  confirmAnswer = true;
+  TQ('[data-act="consult-del"]').click();
+  TA(db.consults.length === 0, '确认后未删除：' + db.consults.length);
+  TA(TTEXT().indexOf('还没有咨询记录') > -1, '删除后未回到空态');
 });
 
 TDONE();

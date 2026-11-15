@@ -7,9 +7,11 @@
 <style>
 *{box-sizing:border-box}
 :root{
-  --bg:#f5f6f8;--card:#fff;--txt:#1b1f24;--muted:#6b7280;--line:#e6e8ec;
-  --accent:#2f6fed;--accent-soft:#eaf1fe;--ok:#12996b;--warn:#d98218;--danger:#d8453c;
-  --r:14px;--shadow:0 1px 2px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.04);
+  --bg:#f5f6f9;--card:#fff;--txt:#161a21;--muted:#6f7787;--line:#e8eaf0;
+  --accent:#3b5bdb;--accent-2:#7048e8;--accent-soft:#eef1fe;
+  --ok:#0f9f6e;--warn:#d98218;--danger:#e03131;
+  --r:16px;--shadow:0 1px 2px rgba(18,22,30,.04),0 10px 28px -14px rgba(18,22,30,.16);
+  --shadow-sm:0 1px 2px rgba(18,22,30,.05);
 }
 html,body{margin:0;padding:0}
 body{background:var(--bg);color:var(--txt);font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -90,7 +92,108 @@ textarea.input{resize:vertical;line-height:1.6}
 .pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .hr{height:1px;background:var(--line);margin:4px 0}
 .bignum{font-size:19px;font-weight:700;letter-spacing:-.3px}
-.tagline{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.tagline{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;align-items:center}
+
+/* ===================== v2 视觉升级 ===================== */
+body{background:radial-gradient(1100px 520px at 100% -8%,#eef1ff 0%,rgba(238,241,255,0) 60%),var(--bg);font-size:13.6px}
+.sidebar{width:228px;flex:0 0 228px;padding:20px 12px 12px;gap:2px}
+.brand{display:flex;align-items:center;gap:9px;font-size:15px;padding:2px 8px 18px;letter-spacing:-.2px}
+.brand:before{content:"";width:24px;height:24px;border-radius:8px;flex:0 0 auto;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 3px 8px -2px rgba(59,91,219,.6)}
+.navitem{padding:9px 10px;border-radius:11px;color:#454d5b;font-size:13.5px;position:relative;transition:background .15s,color .15s}
+.navitem .ic{width:20px;font-size:14px;opacity:.5;transition:opacity .15s}
+.navitem:hover{background:#f4f6fa;color:var(--txt)}
+.navitem.on{background:linear-gradient(90deg,rgba(59,91,219,.10),rgba(112,72,232,.04));color:var(--accent);font-weight:650}
+.navitem.on .ic{opacity:1}
+.navitem.on:before{content:"";position:absolute;left:-12px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:var(--accent)}
+.side-foot{margin-top:auto;padding:10px 5px 2px;border-top:1px solid var(--line);font-size:11px;color:#a2a9b4}
+.side-foot .foot-title{display:block;font-size:11.5px;color:#8d95a2;margin-bottom:7px}
+.side-save{width:100%;padding:9px;border-radius:11px;font-weight:600;background:linear-gradient(180deg,#4c6ef5,#3b5bdb);border-color:#3b5bdb;box-shadow:0 3px 10px -4px rgba(59,91,219,.75);color:#fff;font-size:13px}
+.side-save:hover{background:linear-gradient(180deg,#4263ea,#3450c9);color:#fff}
+.savetime{text-align:center;font-size:11px;color:#9aa2af;margin:8px 0 10px;font-variant-numeric:tabular-nums}
+main{padding:26px 30px 80px;max-width:1280px}
+.ph{margin-bottom:20px;align-items:center}
+.ph h1{font-size:23px;letter-spacing:-.5px}
+.sub{font-size:12.5px;margin-top:4px}
+.card{border-radius:var(--r);border:1px solid #ebedf2;padding:16px 18px;box-shadow:var(--shadow);transition:box-shadow .18s}
+.card-h{margin-bottom:11px}
+.card-h h3{font-size:13.8px;letter-spacing:.1px}
+.grid{gap:18px;margin-bottom:18px}
+.btn{border-radius:10px;border-color:#e3e6ee;padding:8px 13px;font-size:13.1px;transition:.15s;box-shadow:var(--shadow-sm);color:#2a303a}
+.btn:hover{background:#f6f7fb;border-color:#d8dce6}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:linear-gradient(180deg,#4c6ef5,#3b5bdb);border-color:#3b5bdb;color:#fff;box-shadow:0 3px 10px -4px rgba(59,91,219,.7)}
+.btn-primary:hover{background:linear-gradient(180deg,#4263ea,#3450c9);border-color:#3450c9;color:#fff}
+.btn-sm{border-radius:9px;padding:5px 10px;font-size:12.4px}
+.btn-danger{color:var(--danger);border-color:#f0d0d0;background:#fff}
+.btn-danger:hover{background:#fdf3f3;border-color:#e8b9b9}
+.btn-ico{color:#a6adb8;border-radius:8px}
+.btn-ico:hover{color:var(--danger);background:#fdf3f3}
+.input,.select,textarea.input{border-radius:10px;border-color:#e3e6ee;padding:8px 11px;font-size:13.1px;transition:.15s;background:#fcfcfd}
+.input:hover,.select:hover{background:#fff;border-color:#dbe0ea}
+.input:focus,.select:focus,textarea.input:focus{background:#fff;border-color:#a9b8f0;box-shadow:0 0 0 3px rgba(59,91,219,.13)}
+.chip{border-radius:7px;padding:2px 7px;font-size:11px;font-weight:500}
+.chip.high{background:#fdecea;color:#c0392b}
+.chip.mid{background:#fdf4e3;color:#b26a09}
+.chip.low{background:#eef0f5;color:#6b7280}
+.chip.ok{background:#e7f7f0;color:#0b8a5f}
+.chip.acc{background:var(--accent-soft);color:var(--accent)}
+.item{padding:10px 2px;border-bottom:1px solid #f2f4f8}
+.item:last-child{border-bottom:0}
+.t{font-size:13.6px;line-height:1.5}
+.check{border-radius:6px;transition:.12s}
+.check.on{background:linear-gradient(180deg,#12b07c,#0b8a5f);border-color:#0b8a5f}
+.prog{height:6px;background:#eef0f5}
+.prog>i{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.kpi{position:relative;overflow:hidden}
+.kpi:after{content:"";position:absolute;right:-34px;top:-34px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle,rgba(59,91,219,.08),transparent 70%);pointer-events:none}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 14px 30px -16px rgba(18,22,30,.28)}
+.k-num{font-size:27px;font-variant-numeric:tabular-nums;letter-spacing:-.8px}
+.tabs{gap:2px;border-bottom-color:#ebedf2}
+.tab{border-radius:10px 10px 0 0;font-size:13.1px}
+.tab.on{background:linear-gradient(180deg,rgba(59,91,219,.07),rgba(59,91,219,0))}
+.pill{border-radius:9px;padding:5px 11px;font-size:12.3px;transition:.15s}
+.pill:hover{border-color:#cfd6e4;color:var(--txt)}
+.pill.on{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 3px 9px -4px rgba(59,91,219,.8)}
+.overlay{backdrop-filter:blur(2px);background:rgba(16,22,32,.42)}
+.modal{border-radius:18px;box-shadow:0 30px 80px -20px rgba(16,22,32,.45)}
+.modal-h{padding:16px 20px}
+.modal-b{padding:18px 20px;gap:12px}
+.modal-f{padding:14px 20px;background:#fbfbfd;border-radius:0 0 18px 18px}
+.field label{font-size:11.8px;font-weight:500;color:#7b8391}
+.weekrow{grid-template-columns:82px 1fr}
+.weekrow .day{font-size:12.3px}
+.empty{color:#9aa2ad;font-size:12.8px;padding:16px 2px;text-align:center}
+
+/* 日历 */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal .dow{font-size:11.5px;color:#98a0ad;text-align:center;padding:2px 0 4px;font-weight:500}
+.cal .cell{min-height:76px;border:1px solid var(--line);border-radius:11px;padding:6px 7px;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:.13s;text-align:left;font:inherit;color:inherit}
+.cal .cell:hover{border-color:#cbd4e6;background:#fbfcff;box-shadow:0 4px 12px -8px rgba(18,22,30,.3)}
+.cal .cell.out{opacity:.34}
+.cal .cell.today{border-color:#b9c4f5}
+.cal .cell.sel{background:linear-gradient(180deg,#f2f5ff,#eef1fe);border-color:#a9b8f0;box-shadow:0 0 0 2px rgba(59,91,219,.12)}
+.cal .dn{font-size:12.2px;font-weight:600;color:#3c4452;font-variant-numeric:tabular-nums}
+.cal .cell.sel .dn{color:var(--accent)}
+.cal .dots{display:flex;gap:3px;flex-wrap:wrap;min-height:7px}
+.dot{width:6px;height:6px;border-radius:50%;flex:0 0 auto}
+.cal .cnt{font-size:10px;color:#98a0ad;margin-top:auto}
+.cal .tick{font-size:9.5px;color:#0b8a5f;background:#e7f7f0;border-radius:5px;padding:0 4px;align-self:flex-start}
+
+/* 图表 */
+.chart{width:100%;display:block;overflow:visible}
+.chart .grid-line{stroke:#eef0f5;stroke-width:1}
+.chart .lbl{font-size:10px;fill:#9aa2ad}
+.chart .area{opacity:.9}
+.bar-row{display:grid;grid-template-columns:88px 1fr 58px;gap:10px;align-items:center;padding:6px 0}
+.bar-track{display:block;height:8px;background:#f0f2f7;border-radius:999px;overflow:hidden}
+.bar-fill{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .3s}
+.bar-name{font-size:12.5px;color:#4b5462;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-val{font-size:12px;color:#6f7787;text-align:right;font-variant-numeric:tabular-nums}
+
+/* 提示 */
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(10px);background:#161a21;color:#fff;padding:10px 18px;border-radius:11px;font-size:13px;opacity:0;transition:.22s;z-index:90;pointer-events:none;box-shadow:0 12px 30px -12px rgba(0,0,0,.6)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.dirty-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--warn);margin-right:5px;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -98,7 +201,12 @@ textarea.input{resize:vertical;line-height:1.6}
   <aside class="sidebar">
     <div class="brand">我的工作台</div>
     <nav id="nav"></nav>
-    <div class="side-foot">数据只存在这台电脑的浏览器里<br>建议每月在「数据与设置」导出一次备份</div>
+    <div class="side-foot">
+      <span class="foot-title">数据只存在这台电脑的浏览器里</span>
+      <button class="btn side-save" data-act="save-now">保存</button>
+      <div class="savetime" id="saveTime">尚未保存</div>
+      <div>建议每月在「数据与设置」导出一次备份</div>
+    </div>
   </aside>
   <main id="main"></main>
 </div>
@@ -117,6 +225,9 @@ const PSTATUS = ['想法','进行中','暂停','完成'];
 const CSTATUS = ['待跟进','进行中','已完成'];
 const GSTATUS = ['想玩','在玩','通关','弃坑'];
 const MEALS = ['早餐','午餐','晚餐','加餐'];
+const PARTS = ['胸','背','腿','肩','手臂','核心','有氧'];
+const PART_COLOR = {'胸':'#e8590c','背':'#2f9e44','腿':'#1971c2','肩':'#9c36b5','手臂':'#0c8599','核心':'#f08c00','有氧':'#e03131'};
+const MEAL_COLOR = {'早餐':'#f59f00','午餐':'#37b24d','晚餐':'#4c6ef5','加餐':'#9775fa'};
 const WEEKNAME = ['周日','周一','周二','周三','周四','周五','周六'];
 
 const pad = n => String(n).padStart(2,'0');
@@ -134,6 +245,41 @@ function weekRange(){
   const t = todayStr();
   const mon = shift(t, -(weekdayNum(t)-1));
   return [mon, shift(mon,6)];
+}
+
+/* ---------- 日历 ---------- */
+function shiftMonth(m, n){
+  const [y, mo] = m.split('-').map(Number);
+  const d = new Date(y, mo - 1 + n, 1);
+  return d.getFullYear() + '-' + pad(d.getMonth()+1);
+}
+function monthLabel(m){
+  const [y, mo] = m.split('-').map(Number);
+  return y + ' 年 ' + mo + ' 月';
+}
+/* 周一为首列，补齐首尾空格，返回 7 的倍数个格子 */
+function monthCells(m){
+  const [y, mo] = m.split('-').map(Number);
+  const first = new Date(y, mo-1, 1);
+  const lead = (first.getDay() + 6) % 7;
+  const days = new Date(y, mo, 0).getDate();
+  const cells = [];
+  for(let i = lead; i > 0; i--){ const d = new Date(y, mo-1, 1-i); cells.push({date:dstr(d), day:d.getDate(), out:true}); }
+  for(let i = 1; i <= days; i++){ const d = new Date(y, mo-1, i); cells.push({date:dstr(d), day:i, out:false}); }
+  let nx = 1;
+  while(cells.length % 7 !== 0){ const d = new Date(y, mo, nx++); cells.push({date:dstr(d), day:d.getDate(), out:true}); }
+  return cells;
+}
+function calendarHtml(month, selDate, cellFn){
+  const head = ['一','二','三','四','五','六','日'].map(d => `<div class="dow">${d}</div>`).join('');
+  const cells = monthCells(month).map(c => {
+    const cls = ['cell'];
+    if(c.out) cls.push('out');
+    if(c.date === todayStr()) cls.push('today');
+    if(c.date === selDate) cls.push('sel');
+    return `<button class="${cls.join(' ')}" data-act="cal-pick" data-date="${c.date}">${cellFn(c)}</button>`;
+  }).join('');
+  return `<div class="cal">${head}${cells}</div>`;
 }
 function timeAgo(ts){
   const m = Math.floor((Date.now()-ts)/60000);
@@ -174,6 +320,16 @@ function normalize(raw){
   d.fitness = (d.fitness && typeof d.fitness === 'object') ? d.fitness : {};
   d.fitness.week = Object.assign({'1':'','2':'','3':'','4':'','5':'','6':'','7':''}, d.fitness.week || {});
   if(!Array.isArray(d.fitness.logs)) d.fitness.logs = [];
+  /* 训练记录：旧版只有 {date,note}，补成 {date,part,ex,sets,reps,note} */
+  d.fitness.logs = d.fitness.logs.filter(l => l && typeof l === 'object' && l.date);
+  d.fitness.logs.forEach(l => {
+    if(typeof l.part !== 'string') l.part = '';
+    if(typeof l.ex !== 'string') l.ex = '';
+    if(!l.ex && l.note) l.ex = String(l.note);
+    if(typeof l.note !== 'string') l.note = '';
+    l.sets = +l.sets || 0;
+    l.reps = +l.reps || 0;
+  });
   d.food = (d.food && typeof d.food === 'object') ? d.food : {};
   if(!Array.isArray(d.food.items)) d.food.items = [];
   d.projects.forEach(p => {
@@ -194,6 +350,23 @@ function load(){
 let storageWarned = false;
 let db = load();
 
+/* 顶部/侧栏轻提示 */
+let toastTimer = null;
+function toast(msg){
+  let el = document.getElementById('toast');
+  if(!el){ el = document.createElement('div'); el.id = 'toast'; el.className = 'toast'; document.body.appendChild(el); }
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 1600);
+}
+
+function stampSaved(){
+  const d = new Date();
+  const el = document.getElementById('saveTime');
+  if(el) el.textContent = '已保存 ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+}
+
 function save(){
   const payload = JSON.stringify(db);
   try {
@@ -202,6 +375,7 @@ function save(){
       storageWarned = true;
       alert('数据可能没有保存成功：浏览器存储不可用。请立即在「数据与设置」导出备份。');
     }
+    stampSaved();
   }
   catch(e){
     if(!storageWarned){
@@ -217,11 +391,15 @@ function save(){
 let route = 'home';
 let planDate = todayStr();
 let foodDate = todayStr();
+let foodMonth = todayStr().slice(0,7);
+let fitDate = todayStr();
+let fitMonth = todayStr().slice(0,7);
 let smTab = 'idea';
 let cmStage = '全部';
 let devOpen = null;
 let cfFilter = '全部';
 let showUsedIdeas = false;
+let mRange = 14;
 let lastRoute = null;
 
 const NAV = [
@@ -493,6 +671,10 @@ function viewSm(){
     const totalLikes = recs.reduce((n,r)=>n+(+r.likes||0),0);
     const t = todayStr(), d7 = shift(t,-6);
     const views7 = recs.filter(r=>r.date>=d7).reduce((n,r)=>n+(+r.views||0),0);
+    const series = daySeries(mRange);
+    const sumRange = series.reduce((n,s)=>n+s.v,0);
+    const activeDays = series.filter(s=>s.v>0).length;
+    const avgRange = activeDays ? Math.round(sumRange/activeDays) : 0;
 
     body = `
     <div class="grid g3" style="margin-bottom:16px">
@@ -500,6 +682,26 @@ function viewSm(){
       <div class="card"><div class="k-top">累计点赞</div><div class="k-num">${totalLikes}</div><div class="k-sub">平均 ${recs.length?Math.round(totalLikes/recs.length):0} / 条</div></div>
       <div class="card"><div class="k-top">近 7 天播放</div><div class="k-num">${views7}</div><div class="k-sub">${fmtDate(d7)} 至 ${fmtDate(t)}</div></div>
     </div>
+    <div class="grid g2">
+      <section class="card">
+        <div class="card-h">
+          <h3>播放趋势</h3>
+          <div class="row">
+            ${[7,14,30].map(n=>`<button class="pill ${mRange===n?'on':''}" data-act="m-range" data-n="${n}">${n} 天</button>`).join('')}
+          </div>
+        </div>
+        ${areaChart(series)}
+        <div class="row" style="justify-content:space-between;margin-top:8px">
+          <span class="muted xs">合计 ${sumRange} 次播放</span>
+          <span class="muted xs">有数据的日子日均 ${avgRange} 次</span>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-h"><h3>各平台表现</h3><span class="muted xs">累计播放</span></div>
+        ${platformBars()}
+      </section>
+    </div>
+
     <div class="card">
       <div class="card-h"><h3>发布数据</h3><button class="btn btn-primary btn-sm" data-act="metric-new">＋ 记一条数据</button></div>
       <div class="list">${recs.length ? recs.map(r => {
@@ -524,6 +726,69 @@ function viewSm(){
   <div class="ph"><div><h1>自媒体工作</h1><div class="sub">灵感 → 内容 → 数据，一条线走完</div></div></div>
   <div class="tabs">${tabs.map(([k,l])=>`<button class="tab ${smTab===k?'on':''}" data-act="sm-tab" data-tab="${k}">${l}</button>`).join('')}</div>
   ${body}`;
+}
+
+/* ---------- 图表（纯 SVG，不依赖任何库） ---------- */
+function daySeries(n){
+  const out = [];
+  for(let i = n - 1; i >= 0; i--){
+    const d = shift(todayStr(), -i);
+    const rows = db.metrics.filter(r => r.date === d);
+    out.push({
+      date: d,
+      v: rows.reduce((s,r) => s + (+r.views || 0), 0),
+      k: rows.reduce((s,r) => s + (+r.likes || 0), 0)
+    });
+  }
+  return out;
+}
+
+function areaChart(series){
+  const W = 620, H = 190, PL = 30, PR = 10, PT = 16, PB = 26;
+  const n = series.length;
+  const max = Math.max(1, ...series.map(s => s.v));
+  const x = i => PL + (W - PL - PR) * (n <= 1 ? 0 : i / (n - 1));
+  const y = v => PT + (H - PT - PB) * (1 - v / max);
+  const pts = series.map((s,i) => [x(i), y(s.v)]);
+  const line = pts.map((p,i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const area = line + ` L${x(n-1).toFixed(1)},${H-PB} L${PL},${H-PB} Z`;
+  const grid = [0, .5, 1].map(r => {
+    const gy = (PT + (H - PT - PB) * r).toFixed(1);
+    return `<line class="grid-line" x1="${PL}" y1="${gy}" x2="${W-PR}" y2="${gy}"/>`;
+  }).join('');
+  const dots = pts.map((p,i) => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${n > 20 ? 2 : 3}" fill="#3b5bdb"><title>${series[i].date}：${series[i].v} 播放</title></circle>`).join('');
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">
+    <defs><linearGradient id="agrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b5bdb" stop-opacity=".24"/>
+      <stop offset="100%" stop-color="#3b5bdb" stop-opacity="0"/>
+    </linearGradient></defs>
+    ${grid}
+    <path d="${area}" fill="url(#agrad)"/>
+    <path d="${line}" fill="none" stroke="#3b5bdb" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}
+    <text class="lbl" x="${PL - 4}" y="${PT + 4}" text-anchor="end">${max}</text>
+    <text class="lbl" x="${PL - 4}" y="${H - PB}" text-anchor="end">0</text>
+    <text class="lbl" x="${PL}" y="${H - 8}">${fmtDate(series[0].date)}</text>
+    <text class="lbl" x="${W - PR}" y="${H - 8}" text-anchor="end">${fmtDate(series[n-1].date)}</text>
+  </svg>`;
+}
+
+function platformBars(){
+  const map = {};
+  db.metrics.forEach(r => {
+    const c = db.contents.find(x => x.id === r.contentId);
+    const p = c ? (c.platform || '未定平台') : '（内容已删）';
+    map[p] = (map[p] || 0) + (+r.views || 0);
+  });
+  const rows = Object.keys(map).map(k => [k, map[k]]).sort((a,b) => b[1] - a[1]);
+  if(!rows.length) return '<div class="empty">还没有数据，先记一条</div>';
+  const max = Math.max(...rows.map(r => r[1])) || 1;
+  return rows.slice(0, 6).map(([k,v]) => `
+    <div class="bar-row">
+      <span class="bar-name">${esc(k)}</span>
+      <span class="bar-track"><i class="bar-fill" style="width:${Math.max(2, Math.round(v / max * 100))}%"></i></span>
+      <span class="bar-val">${v}</span>
+    </div>`).join('');
 }
 
 /* ============================================================
@@ -555,16 +820,22 @@ function viewDev(){
 
     <div class="grid g2">
       <section class="card">
-        <div class="card-h"><h3>任务</h3><span class="muted xs">${doneN}/${p.tasks.length}</span></div>
+        <div class="card-h">
+          <h3>工作项</h3>
+          <div class="row">
+            <span class="muted xs">${doneN}/${p.tasks.length}</span>
+            <button class="btn btn-sm btn-primary" data-act="dev-item-new" data-pid="${p.id}">＋ 新增工作项</button>
+          </div>
+        </div>
         <div class="prog"><i style="width:${pct}%"></i></div>
         <div class="list">${p.tasks.length ? p.tasks.map(t => `
           <div class="item ${t.done?'done':''}">
             <button class="check ${t.done?'on':''}" data-act="dev-task-toggle" data-pid="${p.id}" data-id="${t.id}">${t.done?'✓':''}</button>
             <div class="it-main"><div class="t">${esc(t.text)}</div></div>
             <button class="btn-ico" data-act="dev-task-del" data-pid="${p.id}" data-id="${t.id}" title="删除">✕</button>
-          </div>`).join('') : '<div class="empty">还没有任务</div>'}</div>
+          </div>`).join('') : '<div class="empty">还没有工作项，点右上角「新增工作项」或下面输入框加一条</div>'}</div>
         <div class="row" style="margin-top:10px">
-          <input class="input" id="devTaskInput" placeholder="加一条任务，回车保存" data-enter="dev-task-add">
+          <input class="input" id="devTaskInput" placeholder="快速加一条工作项，回车保存" data-enter="dev-task-add">
           <button class="btn btn-primary" data-act="dev-task-add">添加</button>
         </div>
       </section>
@@ -599,13 +870,14 @@ function viewDev(){
           <select class="select" data-act="dev-status" data-id="${p.id}" style="width:104px">
             ${PSTATUS.map(s=>`<option ${s===p.status?'selected':''}>${s}</option>`).join('')}
           </select>
-          <button class="btn btn-sm" data-act="dev-open" data-id="${p.id}">打开</button>
+          <button class="btn btn-sm" data-act="dev-item-new" data-pid="${p.id}">＋ 工作项</button>
+          <button class="btn btn-sm btn-primary" data-act="dev-open" data-id="${p.id}">打开</button>
           <button class="btn-ico" data-act="dev-del" data-id="${p.id}" title="删除">✕</button>
         </div>
       </div>
       <div class="prog sm"><i style="width:${pct}%"></i></div>
       <div class="row" style="justify-content:space-between;margin-top:6px">
-        <span class="muted xs">任务 ${doneN}/${p.tasks.length}</span>
+        <span class="muted xs">工作项 ${doneN}/${p.tasks.length}</span>
         <span class="muted xs">${openI?'未解决问题 '+openI+' 个':'问题都清完了'}</span>
       </div>
     </div>`;
@@ -643,7 +915,7 @@ function viewConsult(){
         ${CSTATUS.map(s=>`<option ${s===c.status?'selected':''}>${s}</option>`).join('')}
       </select>
       <button class="btn btn-sm" data-act="consult-edit" data-id="${c.id}">编辑</button>
-      <button class="btn-ico" data-act="consult-del" data-id="${c.id}" title="删除">✕</button>
+      <button class="btn btn-sm btn-danger" data-act="consult-del" data-id="${c.id}">删除</button>
     </div>`;
   }).join('') : '<div class="card"><div class="empty">还没有咨询记录</div></div>';
 
@@ -664,10 +936,30 @@ function viewConsult(){
 function viewFitness(){
   const t = todayStr();
   const wd = String(weekdayNum(t));
-  const todayPlan = db.fitness.week[wd] || '';
-  const logged = db.fitness.logs.some(l => l.date === t);
   const streak = fitStreak();
-  const logs = db.fitness.logs.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,12);
+  const dayLogs = db.fitness.logs.filter(l => l.date === fitDate);
+  const plan = db.fitness.week[String(weekdayNum(fitDate))] || '';
+  const trainedDays = new Set(db.fitness.logs.filter(l => l.date.slice(0,7) === fitMonth).map(l => l.date)).size;
+
+  const cal = calendarHtml(fitMonth, fitDate, c => {
+    const ls = db.fitness.logs.filter(l => l.date === c.date);
+    const parts = [];
+    ls.forEach(l => { if(l.part && parts.indexOf(l.part) < 0) parts.push(l.part); });
+    const dots = parts.slice(0,4).map(p => `<span class="dot" style="background:${PART_COLOR[p] || '#adb5bd'}"></span>`).join('');
+    return `<div class="dn">${c.day}</div><div class="dots">${dots}</div>${ls.length ? `<div class="cnt">${ls.length} 个动作</div>` : ''}`;
+  });
+
+  const rows = dayLogs.length ? dayLogs.map(l => {
+    const vol = (l.sets && l.reps) ? `${l.sets} 组 × ${l.reps} 次` : (l.sets ? `${l.sets} 组` : (l.reps ? `${l.reps} 次` : '未记组次'));
+    return `<div class="item">
+      <span class="chip acc">${esc(l.part || '未分类')}</span>
+      <div class="it-main">
+        <div class="t">${esc(l.ex || '（未填动作）')}</div>
+        <div class="muted xs">${vol}${l.note ? ' · ' + esc(l.note) : ''}</div>
+      </div>
+      <button class="btn-ico" data-act="fit-del" data-id="${l.id}" title="删除这条记录">✕</button>
+    </div>`;
+  }).join('') : '<div class="empty">这天还没有训练记录，下面加一条</div>';
 
   const weekRows = [1,2,3,4,5,6,7].map(n => `
     <div class="weekrow ${String(n)===wd?'today':''}">
@@ -677,33 +969,50 @@ function viewFitness(){
 
   return `
   <div class="ph">
-    <div><h1>健身计划</h1><div class="sub">连续打卡 ${streak} 天 · 本周已练 ${db.fitness.logs.filter(l=>l.date>=weekRange()[0]&&l.date<=weekRange()[1]).length} 天</div></div>
+    <div><h1>健身计划</h1><div class="sub">连续打卡 ${streak} 天 · 本月已练 ${trainedDays} 天 · 共 ${db.fitness.logs.length} 条动作记录</div></div>
+    <button class="btn" data-act="fit-today">回到今天</button>
   </div>
 
   <div class="grid g2">
     <section class="card">
-      <div class="card-h"><h3>今天练什么</h3><span class="chip ${logged?'ok':''}">${logged?'已打卡':'未打卡'}</span></div>
-      <div style="font-size:15px;font-weight:600;margin:4px 0 12px">${todayPlan ? esc(todayPlan) : '今天没排训练，休息日'}</div>
-      ${logged
-        ? `<button class="btn" data-act="fit-uncheck">撤销今天的打卡</button>`
-        : `<button class="btn btn-primary" data-act="fit-check">完成打卡</button>`}
-      <div class="hr" style="margin:16px 0"></div>
-      <div class="card-h"><h3>每周安排</h3><span class="muted xs">改完自动保存</span></div>
-      ${weekRows}
+      <div class="card-h">
+        <h3>训练日历</h3>
+        <div class="row">
+          <button class="btn btn-sm" data-act="fit-month" data-n="-1">‹</button>
+          <span class="muted xs" style="min-width:88px;text-align:center">${monthLabel(fitMonth)}</span>
+          <button class="btn btn-sm" data-act="fit-month" data-n="1">›</button>
+        </div>
+      </div>
+      ${cal}
+      <div class="row wrap" style="margin-top:12px;gap:12px">
+        ${PARTS.map(p=>`<span class="xs muted" style="display:inline-flex;align-items:center;gap:5px"><span class="dot" style="background:${PART_COLOR[p]}"></span>${p}</span>`).join('')}
+      </div>
     </section>
 
     <section class="card">
-      <div class="card-h"><h3>打卡记录</h3><span class="muted xs">最近 ${logs.length} 次</span></div>
-      <div class="list">${logs.length ? logs.map(l => `
-        <div class="item">
-          <div class="it-main">
-            <div class="t">${fmtDate(l.date)} · ${weekName(l.date)}</div>
-            <div class="muted xs">${esc(l.note || '—')}</div>
-          </div>
-          <button class="btn-ico" data-act="fit-log-del" data-id="${l.id}" title="删除">✕</button>
-        </div>`).join('') : '<div class="empty">还没有打卡记录</div>'}</div>
+      <div class="card-h">
+        <h3>${fmtDate(fitDate)} · ${weekName(fitDate)}</h3>
+        <span class="chip ${dayLogs.length?'ok':''}">${dayLogs.length ? dayLogs.length + ' 个动作' : '未记录'}</span>
+      </div>
+      <div class="muted xs" style="margin-bottom:8px">当天计划：${plan ? esc(plan) : '休息日'}</div>
+      <div class="list">${rows}</div>
+      <div class="hr" style="margin:12px 0"></div>
+      <div class="row" style="margin-bottom:8px">
+        <select class="select" id="fitPart" style="width:94px">${PARTS.map(p=>`<option>${p}</option>`).join('')}</select>
+        <input class="input" id="fitEx" placeholder="动作，例如：卧推" data-enter="fit-add">
+      </div>
+      <div class="row">
+        <input class="input" id="fitSets" type="number" min="0" placeholder="组数" style="width:78px">
+        <input class="input" id="fitReps" type="number" min="0" placeholder="次数" style="width:78px">
+        <button class="btn btn-primary" data-act="fit-add" style="flex:1">＋ 记录到这一天</button>
+      </div>
     </section>
-  </div>`;
+  </div>
+
+  <section class="card">
+    <div class="card-h"><h3>每周安排</h3><span class="muted xs">改完自动保存；日历里作为当天的「计划」显示</span></div>
+    ${weekRows}
+  </section>`;
 }
 
 function fitStreak(){
@@ -719,6 +1028,14 @@ function fitStreak(){
 function viewFood(){
   const d = foodDate;
   const items = db.food.items.filter(i => i.date === d);
+
+  const cal = calendarHtml(foodMonth, foodDate, c => {
+    const its = db.food.items.filter(i => i.date === c.date);
+    const slots = its.map(i => i.slot);
+    const dots = MEALS.map(s => `<span class="dot" style="background:${slots.indexOf(s) >= 0 ? MEAL_COLOR[s] : '#e9ecf2'}"></span>`).join('');
+    return `<div class="dn">${c.day}</div><div class="dots">${dots}</div>${its.length ? `<div class="cnt">${its.length} 项</div>` : ''}`;
+  });
+
   const freq = {};
   db.food.items.forEach(i => { freq[i.text] = (freq[i.text]||0) + 1; });
   const common = Object.keys(freq).sort((a,b)=>freq[b]-freq[a]).slice(0,14);
@@ -754,6 +1071,21 @@ function viewFood(){
       <button class="btn" data-act="food-shift" data-n="1">后一天 ›</button>
     </div>
   </div>
+
+  <section class="card" style="margin-bottom:18px">
+    <div class="card-h">
+      <h3>饮食日历</h3>
+      <div class="row">
+        <button class="btn btn-sm" data-act="food-month" data-n="-1">‹</button>
+        <span class="muted xs" style="min-width:88px;text-align:center">${monthLabel(foodMonth)}</span>
+        <button class="btn btn-sm" data-act="food-month" data-n="1">›</button>
+      </div>
+    </div>
+    ${cal}
+    <div class="row wrap" style="margin-top:12px;gap:12px">
+      ${MEALS.map(m=>`<span class="xs muted" style="display:inline-flex;align-items:center;gap:5px"><span class="dot" style="background:${MEAL_COLOR[m]}"></span>${m}</span>`).join('')}
+    </div>
+  </section>
 
   <div class="grid g2">
     <section class="card">${slotHtml}</section>
@@ -863,7 +1195,7 @@ function viewSettings(){
   <div class="card">
     <div class="card-h"><h3>使用说明</h3></div>
     <div class="muted xs" style="line-height:1.9">
-      · 所有改动即时保存，没有保存按钮，刷新和关机都不会丢（前提是不清理浏览器数据）。<br>
+      · 所有改动会即时自动保存；左侧「保存」按钮可手动再存一次（快捷键 Ctrl+S），最近保存时间显示在按钮下方。<br>
       · 这个文件就是整个 App，双击用浏览器打开即可；把它放在固定位置，别删。<br>
       · 如果换电脑：把 HTML 文件和导出的备份 json 一起拷过去，打开文件后导入备份。<br>
       · 想改标题栏名字或配色，可以在文件开头的 <code>:root</code> 里改颜色变量。
@@ -949,7 +1281,29 @@ function devModal(id){
       const name = val('pName');
       if(!name){ alert('先填项目名'); return false; }
       if(id){ Object.assign(p, {name, desc: val('pDesc'), status: val('pStatus')}); }
-      else { db.projects.unshift({id:uid(), name, desc: val('pDesc'), status: val('pStatus'), tasks:[], issues:[]}); }
+      else {
+        const np = {id:uid(), name, desc: val('pDesc'), status: val('pStatus'), tasks:[], issues:[]};
+        db.projects.unshift(np);
+        devOpen = np.id;          /* 建完直接进入项目，马上就能加工作项 */
+      }
+      save(); render();
+    }
+  });
+}
+
+/* 从项目列表直接加工作项，不用先进入项目 */
+function workItemModal(pid){
+  const p = db.projects.find(x => x.id === pid);
+  if(!p) return;
+  openModal({
+    title: '新增工作项 · ' + p.name,
+    submit: '添加',
+    body: `<div class="field"><label>工作项内容</label>
+      <input class="input" id="wiText" placeholder="例如：把首页改版做完" data-enter="wi-save"></div>`,
+    onSave(){
+      const text = val('wiText');
+      if(!text){ alert('先写点什么'); return false; }
+      p.tasks.push({id:uid(), text, done:false});
       save(); render();
     }
   });
@@ -993,6 +1347,17 @@ document.addEventListener('click', e => {
     /* 导航 */
     case 'go': route = el.dataset.route; devOpen = null; render(); break;
     case 'reload': location.reload(); break;
+
+    /* 手动保存 */
+    case 'save-now': save(); toast('已保存'); break;
+
+    /* 日历选中某天 */
+    case 'cal-pick': {
+      const d = el.dataset.date;
+      if(route === 'fitness'){ fitDate = d; fitMonth = d.slice(0,7); }
+      if(route === 'food'){ foodDate = d; foodMonth = d.slice(0,7); }
+      render(); break;
+    }
 
     /* 计划 */
     case 'home-plan': addPlan(todayStr(), 'homePlan'); break;
@@ -1038,10 +1403,12 @@ document.addEventListener('click', e => {
     }
     case 'metric-new': metricModal(); break;
     case 'metric-del': db.metrics = db.metrics.filter(x=>x.id!==id); save(); render(); break;
+    case 'm-range': mRange = +el.dataset.n; render(); break;
 
     /* 开发 */
     case 'dev-new': devModal(null); break;
     case 'dev-edit': devModal(id); break;
+    case 'dev-item-new': workItemModal(el.dataset.pid); break;
     case 'dev-open': devOpen = id; render(); break;
     case 'dev-close': devOpen = null; render(); break;
     case 'dev-del': {
@@ -1090,20 +1457,36 @@ document.addEventListener('click', e => {
     case 'consult-filter': cfFilter = el.dataset.f; render(); break;
 
     /* 健身 */
-    case 'fit-check': {
-      const t = todayStr();
-      const note = db.fitness.week[String(weekdayNum(t))] || '';
-      db.fitness.logs.push({id:uid(), date:t, note});
-      save(); render(); break;
+    case 'fit-month': {
+      fitMonth = shiftMonth(fitMonth, +el.dataset.n);
+      fitDate = (fitMonth === todayStr().slice(0,7)) ? todayStr() : fitMonth + '-01';
+      render(); break;
     }
-    case 'fit-uncheck': {
-      db.fitness.logs = db.fitness.logs.filter(l=>l.date!==todayStr()); save(); render(); break;
+    case 'fit-today': fitDate = todayStr(); fitMonth = todayStr().slice(0,7); render(); break;
+    case 'fit-add': {
+      const ex = val('fitEx');
+      if(!ex){ const box = document.getElementById('fitEx'); if(box) box.focus(); toast('先填动作名称'); break; }
+      db.fitness.logs.push({
+        id: uid(), date: fitDate,
+        part: val('fitPart') || PARTS[0],
+        ex,
+        sets: +val('fitSets') || 0,
+        reps: +val('fitReps') || 0,
+        note: ''
+      });
+      save(); render(); toast('已记录到 ' + fmtDate(fitDate));
+      break;
     }
-    case 'fit-log-del': db.fitness.logs = db.fitness.logs.filter(l=>l.id!==id); save(); render(); break;
+    case 'fit-del': db.fitness.logs = db.fitness.logs.filter(l => l.id !== id); save(); render(); break;
 
     /* 饮食 */
-    case 'food-shift': foodDate = shift(foodDate, +el.dataset.n); render(); break;
-    case 'food-today': foodDate = todayStr(); render(); break;
+    case 'food-month': {
+      foodMonth = shiftMonth(foodMonth, +el.dataset.n);
+      foodDate = (foodMonth === todayStr().slice(0,7)) ? todayStr() : foodMonth + '-01';
+      render(); break;
+    }
+    case 'food-shift': foodDate = shift(foodDate, +el.dataset.n); foodMonth = foodDate.slice(0,7); render(); break;
+    case 'food-today': foodDate = todayStr(); foodMonth = foodDate.slice(0,7); render(); break;
     case 'food-add': addFood(el.dataset.slot); break;
     case 'food-del': db.food.items = db.food.items.filter(x=>x.id!==id); save(); render(); break;
     case 'food-quick': {
@@ -1155,6 +1538,7 @@ document.addEventListener('change', e => {
 });
 
 document.addEventListener('keydown', e => {
+  if((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === 's'){ e.preventDefault(); save(); toast('已保存'); return; }
   if(e.key === 'Escape'){ closeModal(); return; }
   const cmd = e.target.dataset && e.target.dataset.enter;
   if(!cmd || e.key !== 'Enter') return;
@@ -1165,7 +1549,9 @@ document.addEventListener('keydown', e => {
   else if(cmd === 'idea-add') addIdea();
   else if(cmd === 'dev-task-add') document.querySelector('[data-act="dev-task-add"]').click();
   else if(cmd === 'dev-issue-add') document.querySelector('[data-act="dev-issue-add"]').click();
+  else if(cmd === 'fit-add') document.querySelector('[data-act="fit-add"]').click();
   else if(cmd === 'food-add') addFood(e.target.dataset.slot);
+  else if(cmd === 'wi-save'){ const b = document.getElementById('modalSave'); if(b) b.click(); }
 });
 
 document.addEventListener('change', e => {

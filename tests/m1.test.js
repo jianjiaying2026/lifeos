@@ -106,4 +106,22 @@ T('摘要卡整卡可点击跳转对应模块', function(){
   TA(TQ('.navitem.on').textContent.indexOf('饮食') > -1, '侧边栏未高亮饮食');
 });
 
+T('手动保存按钮与 Ctrl+S：写入存储并更新时间', function(){
+  TRESET();
+  TFILL('#memoInput', '保存测试');
+  TCLICK('[data-act="memo-add"]');
+  /* 把时间戳置为初始态，验证点按钮确实会刷新它 */
+  document.getElementById('saveTime').textContent = '尚未保存';
+  TCLICK('[data-act="save-now"]');
+  var after = document.getElementById('saveTime').textContent;
+  TA(/^已保存 \d{2}:\d{2}:\d{2}$/.test(after), '保存时间未更新：' + after);
+  TA(document.getElementById('toast').textContent.indexOf('已保存') > -1, '没有保存提示');
+
+  /* Ctrl+S：只改内存，再靠快捷键落盘 */
+  db.memos.push({ id:'zz', text:'仅在内存', ts: Date.now() });
+  document.dispatchEvent(new KeyboardEvent('keydown', { key:'s', ctrlKey:true, bubbles:true }));
+  var stored = JSON.parse(localStorage.getItem(KEY));
+  TA(stored.memos.some(function(m){ return m.id === 'zz'; }), 'Ctrl+S 未写入存储');
+});
+
 TDONE();
